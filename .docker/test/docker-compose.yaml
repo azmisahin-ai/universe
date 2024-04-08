@@ -2,19 +2,23 @@ version: "3.8"
 
 services:
   cosmos:
-    env_file: .env  
+    env_file: .env
     build:
-      context: ../../
-      dockerfile: .docker/dockerfile.${DISTRIB_ID}
+      context: ../..
+      dockerfile: .docker/Dockerfile.${DISTRIB_ID}
       args:
+        # .env variables are not automatically passed to docker file
         BASE_IMAGE: ${BASE_IMAGE}
+        BUILD_PACKAGES: ${BUILD_PACKAGES}
+        DEVELOPMENT_PACKAGES: ${DEVELOPMENT_PACKAGES}
         TEST_PACKAGES: ${TEST_PACKAGES}
+        PROJECT_FOLDER: ${PROJECT_FOLDER}
       target: $APP_ENV
     volumes:
-      - data:/$DATA_FOLDER        
+      - data:/$DATA_FOLDER
     environment:
-      - ENVIRONMENT=$APP_ENV    
-    command: /bin/sh -c ".docker/test/command.sh"
+      - ENVIRONMENT=$APP_ENV
+    command: /bin/sh -c "${PROJECT_FOLDER}/.docker/test/command.sh"
     ports:
       - "$PORT_RANGE:$PORT"
     restart: "always"
@@ -23,7 +27,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s  
+      start_period: 60s
     cpus: $RESOURCE_CPUS
     mem_limit: $RESOURCE_MEMORY
     deploy:
@@ -39,6 +43,6 @@ services:
               capabilities:
                 - gpu
           cpus: $RESOURCE_CPUS
-          memory: $RESOURCE_MEMORY          
+          memory: $RESOURCE_MEMORY
 volumes:
-  data: 
+  data:

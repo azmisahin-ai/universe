@@ -1,6 +1,5 @@
-# Base stage
+# Base stage for Debain Linux
 ARG BASE_IMAGE="debian:stable"
-ARG BUILDER_IMAGE="buildpack-deps:buster"
 
 # Use the base image as the starting point
 FROM $BASE_IMAGE AS base
@@ -10,32 +9,59 @@ LABEL maintainer.email="azmisahin@outlook.com"
 
 # Development stage
 FROM base AS development
-ARG DEVELOPMENT_PACKAGES=""
+ARG DEVELOPMENT_PACKAGES
 RUN if [ -n "$DEVELOPMENT_PACKAGES" ]; then \
     apt-get update && \
     apt-get install -y --no-install-recommends $DEVELOPMENT_PACKAGES; \
     else \
     echo "No development packages specified."; \
+    exit 1; \
     fi
 
 # Test stage
 FROM base AS test
-ARG TEST_PACKAGES=""
+# Get argument
+ARG PROJECT_FOLDER
+# Switch to work environment
+WORKDIR $PROJECT_FOLDER
+
+# copy project file to container file system
+COPY . .
+
+ARG TEST_PACKAGES
 RUN if [ -n "$TEST_PACKAGES" ]; then \
     apt-get update && \
     apt-get install -y --no-install-recommends $TEST_PACKAGES; \
     else \
     echo "No test packages specified."; \
+    exit 1; \
     fi
 
 # Builder stage
-FROM $BUILDER_IMAGE AS builder
-WORKDIR /build
+FROM base AS builder
+# Get argument
+ARG PROJECT_FOLDER
+# Switch to work environment
+WORKDIR $PROJECT_FOLDER
+
+# copy project file to container file system
 COPY . .
 
-# Run compile command here
-RUN echo "compile universe"
+ARG BUILD_PACKAGES
+RUN mkdir -p $PROJECT_FOLDER/.build/release && \
+    if [ -n "$BUILD_PACKAGES" ]; then \
+    apt-get update && \
+    apt-get install -y --no-install-recommends $BUILD_PACKAGES && \
+    nasm -f elf64 $PROJECT_FOLDER/src/universe.asm -o $PROJECT_FOLDER/.build/universe.o && \
+    ld $PROJECT_FOLDER/.build/universe.o -o $PROJECT_FOLDER/.build/release/universe; \
+    else \
+    echo "No build packages specified."; \
+    exit 1; \
+    fi
 
-# Final production stage with scratch image
+# Final production stage with minimal image
 FROM scratch AS production
-COPY --from=builder /build /
+# Get argument
+ARG PROJECT_FOLDER
+# copy project file from builder to container file system
+COPY --from=builder $PROJECT_FOLDER/.build/release /

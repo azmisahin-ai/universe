@@ -16,14 +16,10 @@
       },
       "extensions": [
         "hediet.vscode-drawio",
-        "ms-azuretools.vscode-docker",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "mikestead.dotenv"
       ]
     }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   }
 }

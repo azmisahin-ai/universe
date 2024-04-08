@@ -7,9 +7,12 @@ services:
       context: ../../
       dockerfile: .docker/dockerfile.${DISTRIB_ID}
       args:
+        # .env variables are not automatically passed to docker file
         BASE_IMAGE: ${BASE_IMAGE}
+        BUILD_PACKAGES: ${BUILD_PACKAGES}
         DEVELOPMENT_PACKAGES: ${DEVELOPMENT_PACKAGES}
-
+        TEST_PACKAGES: ${TEST_PACKAGES}
+        PROJECT_FOLDER: ${PROJECT_FOLDER}
       target: $APP_ENV
     volumes:
       - ../../:/$PROJECT_FOLDER
