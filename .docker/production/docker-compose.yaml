@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  cosmos:
+    env_file: .env
+    build:
+      context: ../../
+      dockerfile: .docker/dockerfile.${DISTRIB_ID}
+      args:
+        BASE_IMAGE: ${BASE_IMAGE}
+      target: $APP_ENV
+    volumes:
+      - data:/$DATA_FOLDER      
+    environment:
+      - ENVIRONMENT=$APP_ENV
+    command: universe
+    ports:
+      - "$PORT_RANGE:$PORT"
+    restart: "always"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://$HOST_IP:$PORT/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    cpus: $RESOURCE_CPUS
+    mem_limit: $RESOURCE_MEMORY
+    deploy:
+      # for swarm
+      replicas: $SCALE
+      # base resources
+      resources:
+        # resources limitation
+        reservations:
+          devices:
+            - driver: nvidia
+              count: $RESOURCE_GPUS
+              capabilities:
+                - gpu
+          cpus: $RESOURCE_CPUS
+          memory: $RESOURCE_MEMORY      
+volumes:
+  data:      

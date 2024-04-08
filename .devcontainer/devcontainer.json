@@ -1,0 +1,29 @@
+{
+  "name": "universe",
+  "dockerComposeFile": ["../.docker/development/docker-compose.yaml"],
+  "service": "cosmos",
+  "workspaceFolder": "/workspace/universe",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER_BASE_NAME": "${localWorkspaceFolderBasename}"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.authorName": "Azmi SAHIN",
+        "git.authorEmail": "azmisahin@outlook.com",
+        "git.defaultCloneDirectory": "${workspaceFolder}",
+        "git.autofetch": true
+      },
+      "extensions": [
+        "hediet.vscode-drawio",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  }
+}

@@ -1,0 +1,41 @@
+# !version: 0.1.1
+# <type>: <subject> (Max. 50 characters)
+# |<---- Use Maximum 50 Characters ---->|
+
+# |<---- Try to Limit Each Line to a Maximum of 72 Characters ---->|
+# Explain how the commit solves the problem
+
+# Our commitment message standard:
+
+# Separate the subject from the body with a blank line
+# Limit subject line to 50 characters
+# Do not end the subject line with a period
+# Try to Limit the Body to 72 Characters
+# Use the body to explain what, why and how
+
+# example 1
+
+# ✨: create standards for git commit messages
+
+# example 2
+
+# ✨: create standards for git commit messages [#0]
+
+# example 3
+
+# ✨: create standards for git commit messages
+#
+# Since git messages need to be edited, we created standards
+# We define the subject with a semicolon after the  symbol
+# references: [#0], [REF-0]
+
+# <type>: <topic>
+# 🎉: create initial configuration
+# 🚧: continue your work
+# ✅: test
+# ✨: add a new feature
+# 📝: update document
+# 🔖: create version
+# ♻️: make code change
+# ⚡️: make a code change that improves performance
+# 🐛: fix a bug

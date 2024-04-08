@@ -1,0 +1,41 @@
+# Base stage
+ARG BASE_IMAGE="alpine:latest"
+ARG BUILDER_IMAGE="buildpack-deps:buster"
+
+# Use the base image as the starting point
+FROM $BASE_IMAGE AS base
+
+# Metadata indicating an image maintainer.
+LABEL maintainer.email="azmisahin@outlook.com"
+
+# Development stage
+FROM base AS development
+ARG DEVELOPMENT_PACKAGES=""
+RUN if [ -n "$DEVELOPMENT_PACKAGES" ]; then \
+    apk update && \
+    apk add --no-cache $DEVELOPMENT_PACKAGES; \
+    else \
+    echo "No development packages specified."; \
+    fi
+
+# Test stage
+FROM base AS test
+ARG TEST_PACKAGES=""
+RUN if [ -n "$TEST_PACKAGES" ]; then \
+    apk update && \
+    apk add --no-cache $TEST_PACKAGES; \
+    else \
+    echo "No test packages specified."; \
+    fi
+
+# Builder stage
+FROM $BUILDER_IMAGE AS builder
+WORKDIR /build
+COPY . .
+
+# Run compile command here
+RUN echo "compile universe"
+
+# Final production stage with scratch image
+FROM scratch AS production
+COPY --from=builder /build /
