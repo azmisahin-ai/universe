@@ -54,20 +54,40 @@ WORKDIR $PROJECT_FOLDER
 COPY . .
 
 ARG BUILD_PACKAGES
-RUN mkdir -p $PROJECT_FOLDER/.build/release && \
+
+# Build x32
+RUN mkdir -p $PROJECT_FOLDER/build/release/x32 && \
     if [ -n "$BUILD_PACKAGES" ]; then \
+    # install package
     apk update && \
     apk add --no-cache $BUILD_PACKAGES && \
-    nasm -f elf64 $PROJECT_FOLDER/src/universe.asm -o $PROJECT_FOLDER/.build/universe.o && \
-    ld $PROJECT_FOLDER/.build/universe.o -o $PROJECT_FOLDER/.build/release/universe; \
+    # compile
+    nasm -F dwarf -g -f elf32 -o $PROJECT_FOLDER/build/release/x32/universe.o -DBITS_32 $PROJECT_FOLDER/src/universe.asm && \
+    # linker
+    ld -m elf_i386 -o $PROJECT_FOLDER/build/release/x32/universe $PROJECT_FOLDER/build/release/x32/universe.o; \
     else \
-    echo "No test packages specified."; \
+    echo "No build packages specified for x32."; \
     exit 1; \
     fi
+
+# Build x64
+RUN mkdir -p $PROJECT_FOLDER/build/release/x64 && \
+    if [ -n "$BUILD_PACKAGES" ]; then \
+    # install package
+    apk update && \
+    apk add --no-cache $BUILD_PACKAGES && \
+    # compile
+    nasm -F dwarf -g -f elf64 -o $PROJECT_FOLDER/build/release/x64/universe.o -DBITS_64 $PROJECT_FOLDER/src/universe.asm && \
+    # linker
+    ld -m elf_x86_64 -o $PROJECT_FOLDER/build/release/x64/universe $PROJECT_FOLDER/build/release/x64/universe.o; \
+    else \
+    echo "No build packages specified for x32."; \
+    exit 1; \
+    fi    
 
 # Final production stage with minimal image
 FROM scratch AS production
 # Get argument
 ARG PROJECT_FOLDER
 # copy project file from builder to container file system
-COPY --from=builder $PROJECT_FOLDER/.build/release /
+COPY --from=builder $PROJECT_FOLDER/build/release/x64/universe /
