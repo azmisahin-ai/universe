@@ -13,6 +13,8 @@ services:
         DEVELOPMENT_PACKAGES: ${DEVELOPMENT_PACKAGES}
         TEST_PACKAGES: ${TEST_PACKAGES}
         PROJECT_FOLDER: ${PROJECT_FOLDER}
+        HOST_IP: ${HOST_IP}
+        PORT: ${PORT}
       target: $APP_ENV
     volumes:
       - ../../:/$PROJECT_FOLDER
@@ -24,11 +26,11 @@ services:
       - "$PORT_RANGE:$PORT"
     restart: "always"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://$HOST_IP:$PORT/" ]
+      test: ["CMD", "curl", "-f", "http://$HOST_IP:$PORT/"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s 
+      start_period: 60s
     cpus: $RESOURCE_CPUS
     mem_limit: $RESOURCE_MEMORY
     deploy:
@@ -44,6 +46,6 @@ services:
               capabilities:
                 - gpu
           cpus: $RESOURCE_CPUS
-          memory: $RESOURCE_MEMORY      
+          memory: $RESOURCE_MEMORY
 volumes:
   data:

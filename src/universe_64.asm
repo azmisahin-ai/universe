@@ -6,10 +6,16 @@ welcome:                ; Welcome
     mov rsi, msg        ; Yazdırılacak stringin adresi
     mov rdx, 20         ; Yazdırılacak karakter sayısı
     syscall             ; syscall çağrısı
+    ret                 ; geri dön    
 
 exit:                   ; Exit    
     mov rax, 60         ; sys_exit için syscall numarası
     xor rdi, rdi        ; Hata kodu olarak sıfır
     syscall             ; syscall çağrısı
 
-socket_listen:          ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler    
+socket_listen:          ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler  
+                        ; Socket oluşturma
+                        
+accept_loop:            ; Sonsuz döngüde
+                        ; Bağlantıyı kabul et
+    ret                 ; geri dön  

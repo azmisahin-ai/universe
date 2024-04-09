@@ -7,6 +7,11 @@ FROM $BASE_IMAGE AS base
 # Metadata indicating an image maintainer.
 LABEL maintainer.email="azmisahin@outlook.com"
 
+# Default HOST_IP and PORT
+ARG HOST_IP=0.0.0.0
+ARG PORT=8280
+EXPOSE $PORT 
+
 # Development stage
 FROM base AS development
 ARG DEVELOPMENT_PACKAGES
@@ -72,5 +77,9 @@ RUN if [ -n "$BUILD_PACKAGES" ]; then \
 FROM scratch AS production
 # Get argument
 ARG PROJECT_FOLDER
+# Default HOST_IP and PORT
+ARG HOST_IP=0.0.0.0
+ARG PORT=8280
+EXPOSE $PORT 
 # copy project file from builder to container file system
 COPY --from=builder $PROJECT_FOLDER/build/release/x64/universe /
