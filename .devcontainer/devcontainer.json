@@ -18,7 +18,8 @@
         "hediet.vscode-drawio",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
-        "mikestead.dotenv"
+        "mikestead.dotenv",
+        "DamianKoper.gdb-debug"
       ]
     }
   }
