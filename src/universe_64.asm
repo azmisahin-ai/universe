@@ -11,3 +11,5 @@ exit:                   ; Exit
     mov rax, 60         ; sys_exit için syscall numarası
     xor rdi, rdi        ; Hata kodu olarak sıfır
     syscall             ; syscall çağrısı
+
+socket_listen:          ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler    

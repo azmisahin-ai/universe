@@ -12,3 +12,4 @@ exit:                   ; Exit
     xor ebx, ebx        ; Çıkış kodu (0)
     int 0x80            ; Linux syscall    
 
+socket_listen:          ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler
