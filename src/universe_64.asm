@@ -13,9 +13,5 @@ exit:                   ; Exit
     xor rdi, rdi        ; Hata kodu olarak sıfır
     syscall             ; syscall çağrısı
 
-socket_listen:          ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler  
-                        ; Socket oluşturma
-                        
-accept_loop:            ; Sonsuz döngüde
-                        ; Bağlantıyı kabul et
+socket:                 ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler
     ret                 ; geri dön  

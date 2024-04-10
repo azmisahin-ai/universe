@@ -10,7 +10,7 @@ LABEL maintainer.email="azmisahin@outlook.com"
 # Default HOST_IP and PORT
 ARG HOST_IP=0.0.0.0
 ARG PORT=8280
-EXPOSE $PORT 
+# EXPOSE $PORT 
 
 # Development stage
 FROM base AS development
@@ -80,6 +80,6 @@ ARG PROJECT_FOLDER
 # Default HOST_IP and PORT
 ARG HOST_IP=0.0.0.0
 ARG PORT=8280
-EXPOSE $PORT 
+# EXPOSE $PORT 
 # copy project file from builder to container file system
 COPY --from=builder $PROJECT_FOLDER/build/release/x64/universe /
