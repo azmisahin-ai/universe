@@ -2,7 +2,6 @@
 
 %include 'src/data.asm'
 %include 'src/logic.asm'
-%include 'src/function.asm'
 
 %ifdef BITS_32
     %include 'src/universe_32.asm'
