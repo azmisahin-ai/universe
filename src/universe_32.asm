@@ -14,5 +14,6 @@ exit:                   ; Exit
     int 0x80            ; Linux syscall      
 
 socket:                 ; HOST_IP="0.0.0.0" PORT="8280" üzerinde dinler
-
-%include 'src/socket.asm'  
+%include 'src/function.asm'
+%include 'src/socket.asm' 
+; %include 'src/connect.asm'  

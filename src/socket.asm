@@ -1,7 +1,5 @@
 ; socket.asm
 
-%include    'src/function.asm'
- 
 socket_start:
  
     xor     eax, eax            ; init eax 0
