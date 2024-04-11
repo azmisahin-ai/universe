@@ -81,11 +81,11 @@ _write:
     mov     eax, 4              ; invoke SYS_WRITE (kernel opcode 4)
     int     80h                 ; call the kernel
 
-; _close:
+_close:
  
-;     mov     ebx, esi            ; move esi into ebx (accepted socket file descriptor)
-;     mov     eax, 6              ; invoke SYS_CLOSE (kernel opcode 6)
-;     int     80h                 ; call the kernel    
+    mov     ebx, esi            ; move esi into ebx (accepted socket file descriptor)
+    mov     eax, 6              ; invoke SYS_CLOSE (kernel opcode 6)
+    int     80h                 ; call the kernel    
  
 _exit:
  
