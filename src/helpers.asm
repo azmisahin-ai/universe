@@ -1,3 +1,6 @@
+%ifndef helpers.asm
+%define helpers.asm
+
 ; @file helpers.asm
 ; @description Yardımcılar dosyası
 ; @author Azmi SAHIN
@@ -85,3 +88,5 @@ quit:
     mov     eax, 1
     int     80h
     ret
+
+%endif

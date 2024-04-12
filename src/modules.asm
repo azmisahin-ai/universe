@@ -1,3 +1,6 @@
+%ifndef modules.asm
+%define modules.asm
+
 ; @file modules.asm
 ; @description Modüller
 ; @author Azmi SAHIN
@@ -9,4 +12,6 @@
 %include 'src/welcome.asm'
 
 %include 'src/socket.asm'
+
+%endif
 

@@ -1,3 +1,6 @@
+%ifndef welcome.asm
+%define welcome.asm
+
 ; @file welcome.asm
 ; @description Başlantma işlemlerini yürütür
 ; @author Azmi SAHIN
@@ -16,3 +19,5 @@ welcome:
     mov     eax, msg_welcome
     call    sprintLF
     ret
+
+%endif

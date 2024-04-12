@@ -1,3 +1,6 @@
+%ifndef connector.asm
+%define connector.asm
+
 ; @file connector.asm
 ; @description Bağlayıcı
 ; @author Azmi SAHIN
@@ -74,3 +77,4 @@ _exit:
  
     call    quit                                    ; call our quit function
 
+%endif

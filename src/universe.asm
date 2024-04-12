@@ -1,3 +1,6 @@
+%ifndef universe.asm
+%define universe.asm
+
 ; @file universe.asm
 ; @description order and structure of the universe
 ; @author Azmi SAHIN
@@ -11,3 +14,5 @@
 %include 'src/data.asm'
 
 %include 'src/logic.asm'
+
+%endif

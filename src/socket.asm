@@ -1,3 +1,6 @@
+%ifndef socket.asm
+%define socket.asm
+
 ; @file socket.asm
 ; @description Programlar arası iletişim sağlar
 ; @author Azmi SAHIN
@@ -6,9 +9,11 @@
 
 section .data
     response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 14', 0Dh, 0Ah, 0Dh, 0Ah, 'Hello Universe!', 0Dh, 0Ah, 0h
-
+    response_len equ $ - response  ; response dizisinin uzunluğunu hesapla
+    msg_listening db 'Listening on 0.0.0.0:8280', 0h
+    
 section .bss
-    buffer resb 255,                                ; İstek başlıklarını saklamak için bellek alanı
+    buffer resb 255                                 ; İstek başlıklarını saklamak için bellek alanı
 
 section .text
     global listen
@@ -19,7 +24,7 @@ section .text
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 listen:
- 
+
     xor     eax, eax                                ; init eax 0
     xor     ebx, ebx                                ; init ebx 0
     xor     edi, edi                                ; init edi 0
@@ -58,11 +63,10 @@ _listen:
     mov     ebx, 4                                  ; invoke subroutine LISTEN (4)
     mov     eax, 102                                ; invoke SYS_SOCKETCALL (kernel opcode 102)
     int     80h                                     ; call the kernel
- 
-;  _listen_message:
-;     mov     eax, msg_listening
-;     call    sprintLF
- 
+    
+    mov     eax, msg_listening                      ; Message to write
+    call    sprintLF                                ; Display listening message
+    
 _accept:
  
     push    byte 0                                  ; push 0 dec onto stack (address length argument)
@@ -93,11 +97,11 @@ _read:
     int     80h                                     ; call the kernel
  
     mov     eax, buffer                             ; move the memory address of our buffer variable into eax for printing
-    ; call    sprintLF                                ; call our string printing function
+    call    sprintLF                                ; call our string printing function
  
 _write:
  
-    mov     edx, 78                                 ; move 78 dec into edx (length in bytes to write)
+    mov     edx, response_len                       ; Yanıt uzunluğu
     mov     ecx, response                           ; move address of our response variable into ecx
     mov     ebx, esi                                ; move file descriptor into ebx (accepted socket id)
     mov     eax, 4                                  ; invoke SYS_WRITE (kernel opcode 4)
@@ -108,7 +112,14 @@ _close:
     mov     ebx, esi                                ; move esi into ebx (accepted socket file descriptor)
     mov     eax, 6                                  ; invoke SYS_CLOSE (kernel opcode 6)
     int     80h                                     ; call the kernel    
- 
+
+
 _exit:
- 
-    ; call    quit                                    ; call our quit function
+    ;Çıkış yap
+    mov     eax, 1                                  ; SYS_EXIT
+    xor     ebx, ebx                                ; Exit status
+    int     80h                                     ; Linux kernel interrupt
+    
+%include 'src/helpers.asm'
+
+%endif
