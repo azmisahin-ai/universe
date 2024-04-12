@@ -1,6 +1,9 @@
 ; socket.asm
 
-socket:
+section .text
+    global listen
+
+listen:
  
     xor     eax, eax            ; init eax 0
     xor     ebx, ebx            ; init ebx 0

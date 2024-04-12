@@ -1,4 +1,6 @@
-; universe.asm
-%include 'src/section.asm'
-%include 'src/module.asm'
+; universe.asm - Evren
+
+%include 'src/constants.asm'
+%include 'src/modules.asm'
+%include 'src/data.asm'
 %include 'src/logic.asm'

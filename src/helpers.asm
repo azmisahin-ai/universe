@@ -1,8 +1,9 @@
-; helper.asm
+; helpers.asm - Yardımcılar dosyası
 
-;------------------------------------------
-; int slen(String message)
-; String length calculation function
+section .text
+    global strlen, sprint, sprintLF, quit
+
+; String uzunluğu hesaplama
 strlen:                     ; this is our first function declaration
     push    ebx             ; push the value in EBX onto the stack to preserve it while we use EBX in this function
     mov     ebx, eax        ; move the address in EAX into EBX (Both point to the same segment in memory)    
@@ -18,9 +19,7 @@ finished:
     pop     ebx             ; pop the value on the stack back into EBX
     ret                     ; return to where the function was called
  
-;------------------------------------------
-; void sprint(String message)
-; String printing function
+; String yazdırma
 sprint:
     push    edx
     push    ecx
@@ -41,9 +40,7 @@ sprint:
     pop     edx
     ret
 
-;------------------------------------------
-; void sprintLF(String message)
-; String printing with line feed function
+; Satır başı ile string yazdırma
 sprintLF:
     call    sprint
  
@@ -56,9 +53,7 @@ sprintLF:
     pop     eax         ; restore the original value of eax before our function was called
     ret                 ; return to our program 
  
-;------------------------------------------
-; void exit()
-; Exit program and restore resources
+; Programdan çık
 quit:
     mov     ebx, 0
     mov     eax, 1
