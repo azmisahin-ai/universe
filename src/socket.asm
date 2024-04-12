@@ -4,6 +4,11 @@
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 
+section .data
+    response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 14', 0Dh, 0Ah, 0Dh, 0Ah, 'Hello Universe!', 0Dh, 0Ah, 0h
+
+section .bss
+    buffer resb 255,                                ; İstek başlıklarını saklamak için bellek alanı
 
 section .text
     global listen
@@ -54,9 +59,9 @@ _listen:
     mov     eax, 102                                ; invoke SYS_SOCKETCALL (kernel opcode 102)
     int     80h                                     ; call the kernel
  
- _listen_message:
-    mov     eax, msg_listening
-    call    sprintLF
+;  _listen_message:
+;     mov     eax, msg_listening
+;     call    sprintLF
  
 _accept:
  
@@ -88,7 +93,7 @@ _read:
     int     80h                                     ; call the kernel
  
     mov     eax, buffer                             ; move the memory address of our buffer variable into eax for printing
-    call    sprintLF                                ; call our string printing function
+    ; call    sprintLF                                ; call our string printing function
  
 _write:
  
@@ -106,4 +111,4 @@ _close:
  
 _exit:
  
-    call    quit                                    ; call our quit function
+    ; call    quit                                    ; call our quit function
