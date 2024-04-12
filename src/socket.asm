@@ -1,6 +1,6 @@
 ; socket.asm
 
-socket_start:
+socket:
  
     xor     eax, eax            ; init eax 0
     xor     ebx, ebx            ; init ebx 0
@@ -40,6 +40,10 @@ _listen:
     mov     ebx, 4              ; invoke subroutine LISTEN (4)
     mov     eax, 102            ; invoke SYS_SOCKETCALL (kernel opcode 102)
     int     80h                 ; call the kernel
+ 
+ _listen_message:
+    mov     eax, msg_listening
+    call    sprintLF
  
 _accept:
  

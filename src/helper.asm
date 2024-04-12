@@ -1,4 +1,4 @@
-call pass
+; helper.asm
 
 ;------------------------------------------
 ; int slen(String message)
@@ -64,5 +64,3 @@ quit:
     mov     eax, 1
     int     80h
     ret
-
-pass:
