@@ -1,11 +1,11 @@
-version: "3.8"
+# docker compose -f "docker-compose.yaml" up -d --build
 
 services:
   cosmos:
     env_file: .env
     build:
       context: ../../
-      dockerfile: .docker/dockerfile.${DISTRIB_ID}
+      dockerfile: .docker/Dockerfile.${DISTRIB_ID}
       args:
         # .env variables are not automatically passed to docker file
         BASE_IMAGE: ${BASE_IMAGE}
@@ -15,6 +15,7 @@ services:
         PROJECT_FOLDER: ${PROJECT_FOLDER}
         HOST_IP: ${HOST_IP}
         PORT: ${PORT}
+        BIT: ${BIT}
       target: $APP_ENV
     volumes:
       - ../../:/$PROJECT_FOLDER
@@ -26,7 +27,7 @@ services:
       - "$PORT_RANGE:$PORT"
     restart: "always"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://$HOST_IP:$PORT/"]
+      test: [ "CMD", "curl", "-f", "http://$HOST_IP:$PORT/" ]
       interval: 30s
       timeout: 10s
       retries: 3
