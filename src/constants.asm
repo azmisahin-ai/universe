@@ -1,4 +1,8 @@
-; constants.asm - Sabit değerler dosyası
+; @file constants.asm
+; @description Sabit değerler dosyası
+; @author Azmi SAHIN
+; @version 0.0.0.1
+; --------------------------------------------------;--------------------------------------------------
 
 section .data
     msg_welcome db 'Universe', 0h

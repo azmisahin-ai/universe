@@ -1,5 +1,8 @@
-; logic.asm - Mantıksal akışlar
-
+; @file logic.asm
+; @description YMantıksal akışlar
+; @author Azmi SAHIN
+; @version 0.0.0.1
+; --------------------------------------------------;--------------------------------------------------
 section .text
     global _start
 
