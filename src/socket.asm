@@ -8,9 +8,9 @@
 ; --------------------------------------------------;--------------------------------------------------
 
 section .data
-    response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 14', 0Dh, 0Ah, 0Dh, 0Ah, 'Hello Universe!', 0Dh, 0Ah, 0h
+    response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 18', 0Dh, 0Ah, 0Dh, 0Ah, 'Hello Universe!', 0Dh, 0Ah, 0h
     response_len equ $ - response  ; response dizisinin uzunluğunu hesapla
-    msg_listening db 'Listening on 0.0.0.0:8280', 0h
+    msg_listening db 'Listening on 0.0.0.0:9001', 0h
     
 section .bss
     buffer resb 255                                 ; İstek başlıklarını saklamak için bellek alanı
