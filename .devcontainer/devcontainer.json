@@ -19,7 +19,8 @@
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "mikestead.dotenv",
-        "DamianKoper.gdb-debug"
+        "DamianKoper.gdb-debug",
+        "ms-vscode.cpptools-extension-pack"
       ]
     }
   }
