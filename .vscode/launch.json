@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug linux_64",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}",
+      "preLaunchTask": "arch_linux_64"
+    },
+
+    {
+      "name": "Debug linux_32",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}",
+      "preLaunchTask": "arch_linux_32"
+    },
+
+    {
+      "name": "Debug win_64",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.exe",
+      "preLaunchTask": "arch_win_64"
+    },
+
+    {
+      "name": "Debug win_32",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.exe",
+      "preLaunchTask": "arch_win_32"
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "arch_linux_64",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "arch_linux_64_create",
+        "arch_linux_64_compile",
+        "arch_linux_64_link"
+      ]
+    },
+    {
+      "label": "arch_linux_64_create",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/debug/linux_64"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "arch_linux_64_compile",
+      "type": "shell",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "elf64",
+        "-gcv8",
+        "-o",
+        "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}.o",
+        "-MD",
+        "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}.o.dep",
+        "-l",
+        "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}.o.lst",
+        "-F",
+        "dwarf",
+        "-g",
+        "-Dlinux_64",
+        "${file}"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+    {
+      "label": "arch_linux_64_link",
+      "type": "shell",
+      "command": "ld",
+      "args": [
+        "-m",
+        "elf_x86_64",
+        "-o",
+        "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}",
+        "${workspaceFolder}/build/debug/linux_64/${fileBasenameNoExtension}.o"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+
+    {
+      "label": "arch_linux_32",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "arch_linux_32_create",
+        "arch_linux_32_compile",
+        "arch_linux_32_link"
+      ]
+    },
+    {
+      "label": "arch_linux_32_create",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/debug/linux_32"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "arch_linux_32_compile",
+      "type": "shell",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "elf32",
+        "-gcv8",
+        "-o",
+        "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}.o",
+        "-MD",
+        "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}.o.dep",
+        "-l",
+        "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}.o.lst",
+        "-F",
+        "dwarf",
+        "-g",
+        "-Dlinux_32",
+        "${file}"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+    {
+      "label": "arch_linux_32_link",
+      "type": "shell",
+      "command": "ld",
+      "args": [
+        "-m",
+        "elf_i386",
+        "-o",
+        "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}",
+        "${workspaceFolder}/build/debug/linux_32/${fileBasenameNoExtension}.o"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+
+    {
+      "label": "arch_win_64",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "arch_win_64_create",
+        "arch_win_64_compile",
+        "arch_win_64_link"
+      ]
+    },
+    {
+      "label": "arch_win_64_create",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/debug/win_64"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "arch_win_64_compile",
+      "type": "shell",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "win64",
+        "-gcv8",
+        "-o",
+        "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.obj",
+        "-MD",
+        "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.o.dep",
+        "-l",
+        "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.o.lst",
+        "-Dwin_64",
+        "${file}"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+    {
+      "label": "arch_win_64_link",
+      "type": "shell",
+      "command": "i686-w64-mingw32-ld",
+      "args": [
+        "-o",
+        "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.exe",
+        "${workspaceFolder}/build/debug/win_64/${fileBasenameNoExtension}.obj"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+
+    {
+      "label": "arch_win_32",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "arch_win_32_create",
+        "arch_win_32_compile",
+        "arch_win_32_link"
+      ]
+    },
+    {
+      "label": "arch_win_32_create",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/debug/win_32"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "arch_win_32_compile",
+      "type": "shell",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "win32",
+        "-gcv8",
+        "-o",
+        "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.obj",
+        "-MD",
+        "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.o.dep",
+        "-l",
+        "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.o.lst",
+        "-Dwin_32",
+        "${file}"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    },
+    {
+      "label": "arch_win_32_link",
+      "type": "shell",
+      "command": "i686-w64-mingw32-ld",
+      "args": [
+        "-o",
+        "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.exe",
+        "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.obj"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
+    }
+  ]
+}

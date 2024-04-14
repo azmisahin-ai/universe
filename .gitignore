@@ -111,7 +111,7 @@ build
 reports
 screens
 .deployment
-.vscode
+#.vscode
 .DS_Store
 
 # flutter
