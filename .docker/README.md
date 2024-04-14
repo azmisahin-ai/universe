@@ -37,7 +37,7 @@ docker build -t template-alpine-test \
     --target test \
     --build-arg BASE_IMAGE=alpine:latest  \
     --build-arg PROJECT_FOLDER=/workspace/template  \
-    --build-arg BUILD_PACKAGES="nasm binutils" \
+    --build-arg BUILD_PACKAGES="nasm binutils mingw-w64-gcc" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
     --build-arg PORT=9090 \
@@ -56,7 +56,7 @@ docker build -t template-alpine-production \
     --target production \
     --build-arg BASE_IMAGE=alpine:latest  \
     --build-arg PROJECT_FOLDER=/workspace/template  \
-    --build-arg BUILD_PACKAGES="nasm binutils" \
+    --build-arg BUILD_PACKAGES="nasm binutils mingw-w64-gcc" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
     --build-arg PORT=8080 \
@@ -77,7 +77,7 @@ docker build -t template-debian-test \
     --target test \
     --build-arg BASE_IMAGE=debian:stable  \
     --build-arg PROJECT_FOLDER=/workspace/template  \
-    --build-arg BUILD_PACKAGES="nasm binutils" \
+    --build-arg BUILD_PACKAGES="nasm binutils mingw-w64" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
     --build-arg PORT=9090 \
@@ -96,7 +96,7 @@ docker build -t template-debian-production \
     --target production \
     --build-arg BASE_IMAGE=debian:stable  \
     --build-arg PROJECT_FOLDER=/workspace/template  \
-    --build-arg BUILD_PACKAGES="nasm binutils" \
+    --build-arg BUILD_PACKAGES="nasm binutils mingw-w64" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
     --build-arg PORT=8080 \
