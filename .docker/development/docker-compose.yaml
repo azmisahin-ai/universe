@@ -4,7 +4,7 @@ services:
   cosmos:
     env_file: .env
     build:
-      context: ../../
+      context: ../..
       dockerfile: .docker/Dockerfile.${DISTRIB_ID}
       args:
         # .env variables are not automatically passed to docker file
@@ -15,10 +15,11 @@ services:
         PROJECT_FOLDER: ${PROJECT_FOLDER}
         HOST_IP: ${HOST_IP}
         PORT: ${PORT}
+        PLATFORM: ${PLATFORM}
         BIT: ${BIT}
       target: $APP_ENV
     volumes:
-      - ../../:/$PROJECT_FOLDER
+      - ../../:/$PROJECT_FOLDER:cache
       - data:/$DATA_FOLDER
     environment:
       - ENVIRONMENT=$APP_ENV

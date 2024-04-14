@@ -40,8 +40,9 @@ docker build -t template-alpine-test \
     --build-arg BUILD_PACKAGES="nasm binutils" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
-    --build-arg PORT=8280 \
-    --build-arg BIT=x32 \
+    --build-arg PORT=9090 \
+    --build-arg PLATFORM=linux \
+    --build-arg BIT=32 \
     .
 
 docker run -it --rm template-alpine-test
@@ -58,8 +59,9 @@ docker build -t template-alpine-production \
     --build-arg BUILD_PACKAGES="nasm binutils" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
-    --build-arg PORT=8280 \
-    --build-arg BIT=x32 \
+    --build-arg PORT=8080 \
+    --build-arg PLATFORM=linux \
+    --build-arg BIT=32 \
     .
 
 docker run -it --rm template-alpine-production /universe
@@ -78,8 +80,9 @@ docker build -t template-debian-test \
     --build-arg BUILD_PACKAGES="nasm binutils" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
-    --build-arg PORT=8280 \
-    --build-arg BIT=x32 \
+    --build-arg PORT=9090 \
+    --build-arg PLATFORM=linux \
+    --build-arg BIT=32 \
     .
 
 docker run -it --rm template-debian-test
@@ -96,8 +99,9 @@ docker build -t template-debian-production \
     --build-arg BUILD_PACKAGES="nasm binutils" \
     --build-arg TEST_PACKAGES="curl" \
     --build-arg HOST_IP="0.0.0.0" \
-    --build-arg PORT=8280 \
-    --build-arg BIT=x32 \
+    --build-arg PORT=8080 \
+    --build-arg PLATFORM=linux \
+    --build-arg BIT=32 \
     .
 
 docker run -it --rm template-debian-production /universe

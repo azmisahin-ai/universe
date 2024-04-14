@@ -11,7 +11,9 @@ LABEL maintainer.email="azmisahin@outlook.com"
 ARG PROJECT_FOLDER=/workspace/template
 ARG HOST_IP=0.0.0.0
 ARG PORT=9001
-ARG BIT=x32
+ARG PLATFORM=linux
+ARG BIT=32
+ARG ARCH="${PLATFORM}_${BIT}"
 
 # Expose port
 EXPOSE $PORT
@@ -61,15 +63,22 @@ RUN if [ -n "$BUILD_PACKAGES" ]; then \
     fi
 
 # Determine CPU architecture and build
-RUN ARCH=$BIT \
-    && if [ "$ARCH" = "x64" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/x64 && \
-    nasm -F dwarf -g -f elf64 -o $PROJECT_FOLDER/build/release/x64/universe.o -DBITS_64 $PROJECT_FOLDER/src/universe.asm && \
-    ld -m elf_x86_64 -o $PROJECT_FOLDER/build/release/x64/universe $PROJECT_FOLDER/build/release/x64/universe.o; \
-    elif [ "$ARCH" = "x32" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/x32 && \
-    nasm -F dwarf -g -f elf32 -o $PROJECT_FOLDER/build/release/x32/universe.o -DBITS_32 $PROJECT_FOLDER/src/universe.asm && \
-    ld -m elf_i386 -o $PROJECT_FOLDER/build/release/x32/universe $PROJECT_FOLDER/build/release/x32/universe.o; \
+RUN if [ "$ARCH" = "linux_64" ]; then \
+    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
+    nasm -F dwarf -g -f elf64 -o $PROJECT_FOLDER/build/release/$ARCH/universe.o -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
+    ld -m elf_x86_64 -o $PROJECT_FOLDER/build/release/$ARCH/universe $PROJECT_FOLDER/build/release/$ARCH/universe.o; \
+    elif [ "$ARCH" = "linux_32" ]; then \
+    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
+    nasm -F dwarf -g -f elf32 -o $PROJECT_FOLDER/build/release/$ARCH/universe.o -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
+    ld -m elf_i386 -o $PROJECT_FOLDER/build/release/$ARCH/universe $PROJECT_FOLDER/build/release/$ARCH/universe.o; \
+    elif [ "$ARCH" = "win_64" ]; then \
+    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
+    nasm -f win64 -o $PROJECT_FOLDER/build/release/$ARCH/universe.obj -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
+    i686-w64-mingw32-ld -o $PROJECT_FOLDER/build/release/$ARCH/universe.exe $PROJECT_FOLDER/build/release/$ARCH/universe.obj; \
+    elif [ "$ARCH" = "win_32" ]; then \
+    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
+    nasm -f win32 -o $PROJECT_FOLDER/build/release/$ARCH/universe.obj -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
+    i686-w64-mingw32-ld -o $PROJECT_FOLDER/build/release/$ARCH/universe.exe $PROJECT_FOLDER/build/release/$ARCH/universe.obj; \
     else \
     echo "Unsupported architecture: $ARCH"; \
     exit 1; \
@@ -80,9 +89,10 @@ FROM scratch AS production
 # Default Arguments
 ARG PROJECT_FOLDER=/workspace/template
 ARG HOST_IP=0.0.0.0
-ARG PORT=9001
-ARG BIT=x32
-
+ARG PORT=8080
+ARG PLATFORM=linux
+ARG BIT=32
+ARG ARCH="${PLATFORM}_${BIT}"
 WORKDIR /
-COPY --from=builder $PROJECT_FOLDER/build/release/$BIT/universe /
+COPY --from=builder $PROJECT_FOLDER/build/release/$ARCH/universe /
 EXPOSE $PORT

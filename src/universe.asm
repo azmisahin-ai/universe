@@ -7,6 +7,8 @@
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 
+%include 'src/platform.asm'
+
 %include 'src/constants.asm'
 
 %include 'src/modules.asm'

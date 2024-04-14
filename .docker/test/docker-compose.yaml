@@ -15,6 +15,7 @@ services:
         PROJECT_FOLDER: ${PROJECT_FOLDER}
         HOST_IP: ${HOST_IP}
         PORT: ${PORT}
+        PLATFORM: ${PLATFORM}
         BIT: ${BIT}
       target: $APP_ENV
     volumes:
