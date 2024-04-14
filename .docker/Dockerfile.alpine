@@ -63,26 +63,8 @@ RUN if [ -n "$BUILD_PACKAGES" ]; then \
     fi
 
 # Determine CPU architecture and build
-RUN if [ "$ARCH" = "linux_64" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
-    nasm -F dwarf -g -f elf64 -o $PROJECT_FOLDER/build/release/$ARCH/universe.o -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
-    ld -m elf_x86_64 -o $PROJECT_FOLDER/build/release/$ARCH/universe $PROJECT_FOLDER/build/release/$ARCH/universe.o; \
-    elif [ "$ARCH" = "linux_32" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
-    nasm -F dwarf -g -f elf32 -o $PROJECT_FOLDER/build/release/$ARCH/universe.o -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
-    ld -m elf_i386 -o $PROJECT_FOLDER/build/release/$ARCH/universe $PROJECT_FOLDER/build/release/$ARCH/universe.o; \
-    elif [ "$ARCH" = "win_64" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
-    nasm -f win64 -o $PROJECT_FOLDER/build/release/$ARCH/universe.obj -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
-    i686-w64-mingw32-ld -o $PROJECT_FOLDER/build/release/$ARCH/universe.exe $PROJECT_FOLDER/build/release/$ARCH/universe.obj; \
-    elif [ "$ARCH" = "win_32" ]; then \
-    mkdir -p $PROJECT_FOLDER/build/release/$ARCH && \
-    nasm -f win32 -o $PROJECT_FOLDER/build/release/$ARCH/universe.obj -D$ARCH $PROJECT_FOLDER/src/universe.asm && \
-    i686-w64-mingw32-ld -o $PROJECT_FOLDER/build/release/$ARCH/universe.exe $PROJECT_FOLDER/build/release/$ARCH/universe.obj; \
-    else \
-    echo "Unsupported architecture: $ARCH"; \
-    exit 1; \
-    fi
+RUN chmod +x $PROJECT_FOLDER/.docker/build.sh
+RUN $PROJECT_FOLDER/.docker/build.sh $ARCH
 
 # Final production stage with minimal image
 FROM scratch AS production
