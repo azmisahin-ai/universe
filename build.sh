@@ -18,7 +18,7 @@ if [ -f "build/os/boot.bin" ] && [ -f "build/os/kernel.bin" ]; then
     dd if=build/os/kernel.bin of=build/os/universe.img seek=1 conv=notrunc
 
     # QEMU'yu başlat
-    qemu-system-i386 -drive id=disk0,file="build/os/universe.img",format=raw
+    qemu-system-x86_64 -drive id=disk0,file="build/os/universe.img",format=raw
 
 else
     echo "Dosya oluşturma işlemi başarısız oldu!"

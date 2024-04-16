@@ -12,17 +12,21 @@ Main16:
 
 disk_load:
     ; BIOS disk okuma fonksiyonu (INT 13h AH=42h)
-    mov ah, 0x42        ; Disk okuma fonksiyon kodu
-    mov bl, 0x00        ; Sürücü numarası (0: ilk sabit disk)
-    mov cx, 0x07E0      ; Hedef bellek adresi (0x07E0:0000)
-    mov dx, 0x0000      ; LBA (Logical Block Addressing) başlangıç bloğu
-    mov ax, 0x0001      ; Okunacak blok sayısı (1 sektör yeterlidir)
-    int 0x13            ; BIOS disk okuma çağrısı
+        mov ah, 0x42        ; Disk okuma fonksiyon kodu
+        mov bl, 0x00        ; Sürücü numarası (0: ilk sabit disk)
+        mov cx, 0x0200      ; Hedef bellek adresi (0x07E0:0000)
+        mov dx, 0x0000      ; LBA (Logical Block Addressing) başlangıç bloğu
+        mov ax, 0x0001      ; Okunacak blok sayısı (1 sektör yeterlidir)
+        int 0x13            ; BIOS disk okuma çağrısı
+
     jc disk_error       ; Hata durumunda disk_error işaretçisine git
 
-    call PrintDebug     ; Okunan verileri ekrana yazdır
+; Okunan veriyi ekrana yazdırmak için
+    mov si, 0x0       ; Okunan verinin başlangıç adresi
+    mov cx, 1024         ; Okunacak byte sayısı (512 byte)
+    call PrintMemory    ; Bellekteki veriyi yazdırmak için alt rutini çağır
 
-    jmp 0x07E0:0000     ; Kernel'in başlangıç adresine atla
+    jmp 0x201     ; Kernel'in başlangıç adresine atla
 
 disk_error:
     ; Hata durumunda ekrana bir mesaj yaz ve işlemi durdur
@@ -46,30 +50,27 @@ PrintMessage:
     call PrintString    ; Yazıyı ekrana yazdıran alt fonksiyonu çağır
     ret
 
-PrintDebug:
-    ; Okunan verileri ekrana yazdırmak için
-    mov si, 0x07E0      ; Okunan verilerin adresi
-    mov cx, 16          ; İlk 16 byte'ı yazdır
-
-.print_loop:
-    lodsb               ; SI'den bir byte yükle
-    call PrintHexByte   ; Byte'ı hex formatında yazdır
-    loop .print_loop    ; Döngüyü tekrarla
+PrintMemory:
+    ; SI'den başlayarak CX kadar bellekten veri oku ve yazdır
+    .print_loop:
+        lodsb           ; SI'den bir byte yükle ve AL'ye yerleştir
+        call PrintHexByte  ; AL'deki byte'ı hexadecimal olarak yazdır
+        loop .print_loop    ; CX'de belirtilen sayı kadar tekrarla
     ret
 
 PrintHexByte:
-    ; Bir byte'ı hex formatında ekrana yazdırmak için
+    ; AL'deki byte'ı hexadecimal olarak ekrana yazdır
     push ax
     push bx
-    mov bx, ax
-    and al, 0x0F
-    mov ah, 0x0E        ; Teletype yazma işlemi için AH'yi 0x0E olarak ayarla
-    add al, '0'
-    cmp al, '9'
-    jbe .print_digit
-    add al, 7            ; 'A' - '9' = 7
+    mov bx, ax          ; BX'e AL'i yedekle
+    and al, 0x0F        ; AL'yi 0x0F ile AND'leyerek düşük dört biti al
+    mov ah, 0x0E        ; AH'yi 0x0E olarak ayarla (teletype yazma işlemi için)
+    add al, '0'         ; ASCII karakterine dönüştür
+    cmp al, '9'         ; AL '9'dan küçük veya eşit mi?
+    jbe .print_digit    ; Küçük veya eşitse, doğrudan yazdır
+    add al, 7           ; 10'dan büyükse, 'A'-'9'=7 ekleyerek büyük harf yap
 .print_digit:
-    int 0x10             ; BIOS'a karakter yazdırma çağrısı
+    int 0x10            ; AH=0x0E ile teletype yazma işlemi (karakteri yazdır)
     pop bx
     pop ax
     ret
