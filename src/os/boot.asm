@@ -14,7 +14,7 @@ disk_load:
     ; BIOS disk okuma fonksiyonu (INT 13h AH=42h)
         mov ah, 0x42        ; Disk okuma fonksiyon kodu
         mov bl, 0x00        ; Sürücü numarası (0: ilk sabit disk)
-        mov cx, 0x0200      ; Hedef bellek adresi (0x07E0:0000)
+        mov cx, 0x0201      ; Hedef bellek adresi (0x07E0:0000)
         mov dx, 0x0000      ; LBA (Logical Block Addressing) başlangıç bloğu
         mov ax, 0x0001      ; Okunacak blok sayısı (1 sektör yeterlidir)
         int 0x13            ; BIOS disk okuma çağrısı
@@ -22,8 +22,8 @@ disk_load:
     jc disk_error       ; Hata durumunda disk_error işaretçisine git
 
 ; Okunan veriyi ekrana yazdırmak için
-    mov si, 0x0       ; Okunan verinin başlangıç adresi
-    mov cx, 1024         ; Okunacak byte sayısı (512 byte)
+    mov si, 0x201       ; Okunan verinin başlangıç adresi
+    mov cx, 512         ; Okunacak byte sayısı (512 byte)
     call PrintMemory    ; Bellekteki veriyi yazdırmak için alt rutini çağır
 
     jmp 0x201     ; Kernel'in başlangıç adresine atla
