@@ -10,15 +10,15 @@ org 0x7C00  ; Kodun başlangıç adresini belirliyoruz
 Main16:
     call PrintMessage  ; Ekrana çıktı basmak için gerekli fonksiyonları çağırıyoruz
 
-disk: ; Diskten kernel dosyasını yükleme işlemleri    
-    
+disk:    
+    ; Diskten kernel dosyasını yükleme işlemleri
     mov ah, 0x02       ; Disk okuma fonksiyonu
     mov al, 1          ; Okunacak sektör sayısı (kernel için 1 sektör yeterlidir)
     mov ch, 0          ; Silindir (başlangıç)
     mov cl, 2          ; Sector numarası (1. sektör)
     mov dh, 0          ; Başlangıç başlığı
     mov dl, 0x80       ; 0x80 - İlk sabit disk
-    mov bx, 0x7E00     ; Yükleyeceğimiz bellek adresi: 0x07E0:0000
+    mov bx, 0x0000     ; Yükleyeceğimiz bellek adresi: 0x07E0:0000
     int 0x13           ; Disk okuma çağrısı
 
     jc disk_error      ; Hata durumunda disk_error işaretçisine git
