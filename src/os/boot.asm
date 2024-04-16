@@ -18,12 +18,12 @@ disk:
     mov cl, 2          ; Sector numarası (1. sektör)
     mov dh, 0          ; Başlangıç başlığı
     mov dl, 0x80       ; 0x80 - İlk sabit disk
-    mov bx, 0x0000     ; Yükleyeceğimiz bellek adresi: 0x07E0:0000
+    mov bx, 0x07E0     ; Yükleyeceğimiz bellek adresi: 0x07E0:0000
     int 0x13           ; Disk okuma çağrısı
 
     jc disk_error      ; Hata durumunda disk_error işaretçisine git
 
-    jmp 0x0000:7E00    ; Kernel'in başlangıç adresine atla
+    jmp 0x07E0    ; Kernel'in başlangıç adresine atla
 
 done:
     ret

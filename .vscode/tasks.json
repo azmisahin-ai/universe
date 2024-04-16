@@ -271,6 +271,49 @@
           "regexp": "error"
         }
       }
+    },
+
+    {
+      "label": "arch_os_16",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "arch_os_16_create",
+        "arch_os_16_compile"
+      ]
+    },
+    {
+      "label": "arch_os_16_create",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/debug/os_16"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
+      "label": "arch_os_16_compile",
+      "type": "shell",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "bin",
+        "-o",
+        "${workspaceFolder}/build/debug/os_16/${fileBasenameNoExtension}.bin",
+        "-MD",
+        "${workspaceFolder}/build/debug/os_16/${fileBasenameNoExtension}.o.dep",
+        "-l",
+        "${workspaceFolder}/build/debug/os_16/${fileBasenameNoExtension}.o.lst",
+        "-Dos_16",
+        "${file}"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      }
     }
   ]
 }
