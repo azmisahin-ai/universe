@@ -1,5 +1,9 @@
-nasm -f bin src/boot.asm -o build/boot.bin
-dd if=/dev/zero of=build/fda.img bs=512 count=2880
-dd if=build/boot.bin of=build/fda.img bs=512 count=1 conv=notrunc
+# build.sh
 
-qemu-system-i386 build/fda.img
+mkdir -p build/os
+
+nasm -f bin src/os/boot.asm -o build/os/boot.bin
+nasm -f bin src/os/kernel.asm -o build/os/kernel.bin
+cat build/os/boot.bin build/os/kernel.bin > build/os/universe.img
+
+qemu-system-i386 build/os/universe.img
