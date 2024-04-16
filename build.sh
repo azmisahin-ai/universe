@@ -1,8 +1,3 @@
-#!/bin/bash
-
-# Çıktı dizinini oluştur
-mkdir -p build/os
-
 # Boot ve kernel dosyalarını derle
 nasm -f bin src/os/boot.asm -o build/os/boot.bin
 nasm -f bin src/os/kernel.asm -o build/os/kernel.bin
@@ -11,14 +6,14 @@ nasm -f bin src/os/kernel.asm -o build/os/kernel.bin
 if [ -f "build/os/boot.bin" ] && [ -f "build/os/kernel.bin" ]; then
 
     # Disk imajını oluştur
-    dd if=/dev/zero of=build/os/universe.img bs=512 count=2880
+    dd bs=512 count=2880 if=/dev/zero of=build/os/fda.img   # 2880 adet 512 byte'lık sektör
 
     # Boot ve kernel dosyalarını imaj dosyasına kopyala
-    dd if=build/os/boot.bin of=build/os/universe.img conv=notrunc
-    dd if=build/os/kernel.bin of=build/os/universe.img seek=1 conv=notrunc
+    dd seek=0 conv=notrunc of=build/os/fda.img if=build/os/boot.bin 
+    dd seek=1 conv=notrunc of=build/os/fda.img if=build/os/kernel.bin
 
     # QEMU'yu başlat
-    qemu-system-x86_64 -drive id=disk0,file="build/os/universe.img",format=raw
+    qemu-system-x86_64 -fda build/os/fda.img 
 
 else
     echo "Dosya oluşturma işlemi başarısız oldu!"

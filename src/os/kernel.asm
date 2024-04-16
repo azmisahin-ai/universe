@@ -1,26 +1,24 @@
-BITS 16         ; 16-bit modda başlıyoruz
+; src/os/kernel.asm
+BITS 16
+org 0x1000
 
-org 0x7E00      ; Kernel'in bellek adresi
+; Ekrana mesaj yazdırma
+mov ah, 0x0E    ; Teletype yazma fonksiyonu
+mov al, 'H'
+int 0x10
 
-_start:
-    mov ax, 0x07C0      ; DS'yi başlangıç adresiyle ayarla
-    mov ds, ax
+mov al, 'e'
+int 0x10
 
-    mov si, helloMessage    ; Yazdırılacak mesajın adresini SI'ye yükle
-    call PrintString        ; Yazıyı ekrana yazdıran fonksiyonu çağır
+mov al, 'l'
+int 0x10
 
-    jmp $                   ; Sonsuz döngü
+mov al, 'l'
+int 0x10
 
-PrintString:
-    lodsb                   ; SI'den bir karakter yükle
-    or al, al               ; AL'nin 0 olup olmadığını kontrol et
-    jz done                 ; Eğer AL 0 ise yazma işlemi bitmiştir
+mov al, 'o'
+int 0x10
 
-    mov ah, 0x0E            ; Teletype yazma işlemi için AH'yi 0x0E olarak ayarla
-    int 0x10                ; BIOS'a karakter yazdırma çağrısı
-    jmp PrintString         ; Bir sonraki karakter için tekrarla
+jmp $           ; Sonsuz döngüde beklemek için
 
-done:
-    ret
-
-helloMessage db 'Hello, Universe!', 13, 10, 0  ; Yazdırılacak mesaj
+times 512-($-$$) db 0
