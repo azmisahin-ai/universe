@@ -1,4 +1,4 @@
-# boot.sh
+# build.sh
 #!/bin/bash
 
 mkdir -p build/os
