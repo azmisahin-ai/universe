@@ -9,7 +9,7 @@ org 0x7C00  ; Kodun başlangıç adresini belirliyoruz
 
 Main16:
     call PrintMessage  ; Ekrana çıktı basmak için gerekli fonksiyonları çağırıyoruz
-
+    
 disk:    
     ; Diskten kernel dosyasını yükleme işlemleri
     mov ah, 0x02       ; Disk okuma fonksiyonu
@@ -23,6 +23,7 @@ disk:
 
     jc disk_error      ; Hata durumunda disk_error işaretçisine git
 
+kernel:
     jmp 0x07E0         ; Kernel'in başlangıç adresine atla
 
 done:
@@ -48,8 +49,8 @@ disk_error:
     call PrintString
     jmp $ ; İşlemi durdur
 
-bootMessage db 'Booting!', 0  ; Yazdırılacak mesaj
-diskErrorMessage db 'Disk reading error!', 0
+bootMessage db 'Booting!', 13, 10, 0  ; Yazdırılacak mesaj
+diskErrorMessage db 'Disk reading error!', 13, 10, 0
 
 times 510-($-$$) db 0          ; Boot sektörü boyutunu 512 byte'a tamamla
 dw 0xAA55                      ; Boot sektörü imzası
