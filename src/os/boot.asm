@@ -8,17 +8,17 @@ org 0x7C00  ; Kodun başlangıç adresini belirliyoruz
     mov ds, ax         ; DS'yi sıfıra ayarla
 
 Main16:
-    
-    call PrintMessage ; Ekrana çıktı basmak için gerekli fonksiyonları çağırıyoruz
+    call PrintMessage  ; Ekrana çıktı basmak için gerekli fonksiyonları çağırıyoruz
 
-disk:    ; Diskten kernel dosyasını yükleme işlemleri
+disk: ; Diskten kernel dosyasını yükleme işlemleri    
+    
     mov ah, 0x02       ; Disk okuma fonksiyonu
     mov al, 1          ; Okunacak sektör sayısı (kernel için 1 sektör yeterlidir)
     mov ch, 0          ; Silindir (başlangıç)
     mov cl, 2          ; Sector numarası (1. sektör)
     mov dh, 0          ; Başlangıç başlığı
     mov dl, 0x80       ; 0x80 - İlk sabit disk
-    mov bx, 0x0000     ; Yükleyeceğimiz bellek adresi: 0x0000:7E00
+    mov bx, 0x7E00     ; Yükleyeceğimiz bellek adresi: 0x07E0:0000
     int 0x13           ; Disk okuma çağrısı
 
     jc disk_error      ; Hata durumunda disk_error işaretçisine git
@@ -28,7 +28,7 @@ disk:    ; Diskten kernel dosyasını yükleme işlemleri
 done:
     ret
 
-PrintString: ; Yazıyı ekrana yazdıran alt fonksiyon
+PrintString: 
     lodsb           ; SI'den bir karakter yükle
     or al, al       ; AL'nin 0 olup olmadığını kontrol et
     jz done         ; Eğer AL 0 ise yazma işlemi bitmiştir
@@ -37,13 +37,13 @@ PrintString: ; Yazıyı ekrana yazdıran alt fonksiyon
     int 0x10        ; BIOS'a karakter yazdırma çağrısı
     jmp PrintString ; Bir sonraki karakter için tekrarla
 
-PrintMessage: ; Ekrana mesaj yazdıran fonksiyon
+PrintMessage: 
     mov si, bootMessage  ; Yazdırılacak mesajın adresini SI'ye yükle
     call PrintString     ; Yazıyı ekrana yazdıran alt fonksiyonu çağır
     ret
 
-disk_error:     ; Hata durumunda ekrana bir mesaj yaz ve işlemi durdur
-
+disk_error:     
+    ; Hata durumunda ekrana bir mesaj yaz ve işlemi durdur
     mov si, diskErrorMessage
     call PrintString
     jmp $ ;  durdur
