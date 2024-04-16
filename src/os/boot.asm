@@ -23,7 +23,7 @@ disk:
 
     jc disk_error      ; Hata durumunda disk_error işaretçisine git
 
-    jmp 0x07E0    ; Kernel'in başlangıç adresine atla
+    jmp 0x07E0         ; Kernel'in başlangıç adresine atla
 
 done:
     ret
@@ -46,9 +46,9 @@ disk_error:
     ; Hata durumunda ekrana bir mesaj yaz ve işlemi durdur
     mov si, diskErrorMessage
     call PrintString
-    jmp $ ;  durdur
+    jmp $ ; İşlemi durdur
 
-bootMessage db 'Booting!', 0  ; Yazdırılacak mesajı
+bootMessage db 'Booting!', 0  ; Yazdırılacak mesaj
 diskErrorMessage db 'Disk reading error!', 0
 
 times 510-($-$$) db 0          ; Boot sektörü boyutunu 512 byte'a tamamla
