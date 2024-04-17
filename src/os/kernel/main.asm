@@ -1,7 +1,6 @@
 ; @file src/os/kernel/main.asm
 ; @description Responsible for managing resources.
 ; @author Azmi SAHIN
-; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 BITS 16
 org 0x1000
