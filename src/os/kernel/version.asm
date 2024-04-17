@@ -12,7 +12,7 @@ org 0x1000
 %define MAJOR_VERSION 0
 %define MINOR_VERSION 0
 %define PATCH_VERSION 0
-%define BUILD_VERSION 0
+%define BUILD_VERSION 1
 
 section .text
 
@@ -36,5 +36,11 @@ version_entry:
 
     mov al, '0' + BUILD_VERSION                     ; Build version
     int 0x10
+
+    mov al, 10                                      ; line feed
+    int 0x10  
+
+    mov al, 13                                      ; enter
+    int 0x10    
 
 %endif
