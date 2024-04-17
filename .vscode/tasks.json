@@ -314,10 +314,23 @@
     },
 
     {
+      "label": "crateBuildFolder",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["-p", "${workspaceFolder}/build/os"],
+      "presentation": {
+        "focus": true,
+        "panel": "shared",
+        "reveal": "silent",
+        "clear": true
+      }
+    },
+    {
       "label": "compileBoot",
       "type": "shell",
       "command": "nasm",
-      "args": ["-f", "bin", "src/os/boot.asm", "-o", "build/os/boot.bin"],
+      "args": ["-f", "bin", "src/os/boot/mbr.asm", "-o", "build/os/boot.bin"],
+      "dependsOn": ["crateBuildFolder"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -327,7 +340,14 @@
       "label": "compileKernel",
       "type": "shell",
       "command": "nasm",
-      "args": ["-f", "bin", "src/os/kernel.asm", "-o", "build/os/kernel.bin"],
+      "args": [
+        "-f",
+        "bin",
+        "src/os/kernel/main.asm",
+        "-o",
+        "build/os/kernel.bin"
+      ],
+      "dependsOn": ["crateBuildFolder"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -338,6 +358,7 @@
       "type": "shell",
       "command": "dd",
       "args": ["if=/dev/zero", "of=build/os/fda.img", "bs=512", "count=2880"],
+      "dependsOn": ["crateBuildFolder"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -348,6 +369,7 @@
       "type": "shell",
       "command": "dd",
       "args": ["if=/dev/zero", "of=build/os/hda.img", "bs=512", "count=2880"],
+      "dependsOn": ["crateBuildFolder"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -363,7 +385,7 @@
         "seek=0",
         "conv=notrunc"
       ],
-      "dependsOn": ["compileBoot", "createFlopyImage","createDiskImage"],
+      "dependsOn": ["compileBoot", "createFlopyImage", "createDiskImage"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -379,7 +401,12 @@
         "seek=1",
         "conv=notrunc"
       ],
-      "dependsOn": ["copyBootToImage", "compileKernel", "createFlopyImage","createDiskImage"],
+      "dependsOn": [
+        "copyBootToImage",
+        "compileKernel",
+        "createFlopyImage",
+        "createDiskImage"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -390,10 +417,12 @@
       "type": "shell",
       "command": "qemu-system-x86_64",
       "args": [
-        "-machine", "q35",
+        "-machine",
+        "q35",
         "-name",
         "Universe",
-        "-m","256",
+        "-m",
+        "256",
         "-smp",
         "sockets=1,cpus=4",
         "-netdev",
@@ -409,11 +438,7 @@
         "-device",
         "ide-hd,drive=disk0,bus=ahci.0",
         "-serial",
-        "file:serial.log",
-        // "-monitor",
-        // "telnet:localhost:8086,server,nowait",
-        // "-s",
-        // "-S"
+        "file:build/serial.log"
       ],
       "dependsOn": ["copyKernelToImage"],
       "group": {

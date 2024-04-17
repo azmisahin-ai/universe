@@ -1,3 +1,8 @@
+; @file src/os/boot/mbr.asm
+; @description Master boot record
+; @author Azmi SAHIN
+; @version 0.0.0.1
+; --------------------------------------------------;--------------------------------------------------
 BITS 16
 org 0x7C00
 
