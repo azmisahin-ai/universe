@@ -12,8 +12,6 @@ org 0x1000
 %define BUILD_VERSION 0
 
 section .text
-    ; Giriş noktası
-    global version_entry
 
 version_entry:
     mov ah, 0x0E                                    ; Teletype yazma fonksiyonu için AH'ya 0x0E yükle
@@ -36,6 +34,4 @@ version_entry:
     mov al, '0' + BUILD_VERSION                     ; Build version
     int 0x10
 
-infinite_loop_version:                              ; Eğer 0x4C işlem kodu desteklenmiyorsa, sonsuz döngüye gir
-    jmp infinite_loop_version                       ; Sonsuz döngü oluştur
     
