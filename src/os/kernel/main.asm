@@ -12,7 +12,3 @@ org 0x1000
 %include "src/os/kernel/memory.asm"
 %include "src/os/kernel/networking.asm"
 %include "src/os/kernel/processes.asm"
-
-jmp $           ; Sonsuz döngüde beklemek için
-
-times 512-($-$$) db 0
