@@ -36,10 +36,6 @@ version_entry:
     mov al, '0' + BUILD_VERSION                     ; Build version
     int 0x10
 
-    ; Programı sonlandır
-    mov ah, 0x4C                                    ; Programı sonlandırma için AH'ya 0x4C yükle
-    int 0x21                                        ; İnterrupt 0x21 (DOS işlevleri) çağrısı
-
-infinite_loop:                                      ; Eğer 0x4C işlem kodu desteklenmiyorsa, sonsuz döngüye gir
-    jmp infinite_loop                               ; Sonsuz döngü oluştur
+infinite_loop_version:                              ; Eğer 0x4C işlem kodu desteklenmiyorsa, sonsuz döngüye gir
+    jmp infinite_loop_version                       ; Sonsuz döngü oluştur
     
