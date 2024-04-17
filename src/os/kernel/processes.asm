@@ -1,3 +1,6 @@
+%ifndef processes.asm
+%define processes.asm
+
 ; @file src/os/kernel/processes.asm
 ; @description processes
 ; @author Azmi SAHIN
@@ -12,3 +15,5 @@ initialize_processes:
 
     mov al, 'P'                                     ; processes
     int 0x10
+
+%endif

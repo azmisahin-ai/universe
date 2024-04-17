@@ -1,3 +1,6 @@
+%ifndef memory.asm
+%define memory.asm
+
 ; @file src/os/kernel/memory.asm
 ; @description memory
 ; @author Azmi SAHIN
@@ -12,3 +15,5 @@ manage_memory:
 
     mov al, 'M'                                     ; memory
     int 0x10
+
+%endif

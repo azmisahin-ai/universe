@@ -1,3 +1,6 @@
+%ifndef version.asm
+%define version.asm
+
 ; @file src/os/kernel/version.asm
 ; @description Version information for the kernel.
 ; @author Azmi SAHIN
@@ -34,4 +37,4 @@ version_entry:
     mov al, '0' + BUILD_VERSION                     ; Build version
     int 0x10
 
-    
+%endif

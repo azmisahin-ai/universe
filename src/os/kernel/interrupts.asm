@@ -1,3 +1,5 @@
+%ifndef interrupts.asm
+%define interrupts.asm
 ; @file src/os/kernel/interrupts.asm
 ; @description interrupts
 ; @author Azmi SAHIN
@@ -12,4 +14,5 @@ setup_interrupts:
 
     mov al, 'I'                                     ; interrupts
     int 0x10
-    
+
+%endif

@@ -1,3 +1,6 @@
+%ifndef networking.asm
+%define networking.asm
+
 ; @file src/os/kernel/networking.asm
 ; @description networking
 ; @author Azmi SAHIN
@@ -12,3 +15,5 @@ configure_networking:
 
     mov al, 'N'                                     ; networking
     int 0x10
+
+%endif
