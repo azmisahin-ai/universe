@@ -45,7 +45,7 @@
       "name": "Remote",
       "type": "gdb",
       "request": "launch",
-      "program": "${workspaceFolder}/build/os/kernel.bin",
+      "program": "${workspaceFolder}/build/os/{fileBasenameNoExtension}.bin",
       "preLaunchTask": "startQemu"
     }
   ]

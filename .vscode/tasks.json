@@ -334,10 +334,20 @@
       }
     },
     {
-      "label": "createImage",
+      "label": "createFlopyImage",
       "type": "shell",
       "command": "dd",
       "args": ["if=/dev/zero", "of=build/os/fda.img", "bs=512", "count=2880"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "createDiskImage",
+      "type": "shell",
+      "command": "dd",
+      "args": ["if=/dev/zero", "of=build/os/hda.img", "bs=512", "count=2880"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -353,7 +363,7 @@
         "seek=0",
         "conv=notrunc"
       ],
-      "dependsOn": ["compileBoot", "createImage"],
+      "dependsOn": ["compileBoot", "createFlopyImage","createDiskImage"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -369,7 +379,7 @@
         "seek=1",
         "conv=notrunc"
       ],
-      "dependsOn": ["copyBootToImage", "compileKernel", "createImage"],
+      "dependsOn": ["copyBootToImage", "compileKernel", "createFlopyImage","createDiskImage"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -379,7 +389,32 @@
       "label": "startQemu",
       "type": "shell",
       "command": "qemu-system-x86_64",
-      "args": ["-fda", "build/os/fda.img"],
+      "args": [
+        "-machine", "q35",
+        "-name",
+        "Universe",
+        "-m","256",
+        "-smp",
+        "sockets=1,cpus=4",
+        "-netdev",
+        "socket,id=testnet,listen=:1234",
+        "-device",
+        "e1000,netdev=testnet,mac=10:11:12:13:14:15",
+        "-drive",
+        "id=disk0,file=build/os/hda.img,if=none,format=raw",
+        "-fda",
+        "build/os/fda.img",
+        "-device",
+        "ahci,id=ahci",
+        "-device",
+        "ide-hd,drive=disk0,bus=ahci.0",
+        "-serial",
+        "file:serial.log",
+        // "-monitor",
+        // "telnet:localhost:8086,server,nowait",
+        // "-s",
+        // "-S"
+      ],
       "dependsOn": ["copyKernelToImage"],
       "group": {
         "kind": "build",
