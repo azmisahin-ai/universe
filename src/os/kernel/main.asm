@@ -13,7 +13,7 @@ org 0x1000
 %include "src/os/kernel/networking.asm"
 %include "src/os/kernel/processes.asm"
 
-global kernel_start                                 ; Çekirdeği otomatik başlat
+                                                    ; Çekirdeği otomatik başlar
 
 kernel_start:                                       ; Çekirdek başlangıç noktası
     
@@ -28,6 +28,3 @@ kernel_start:                                       ; Çekirdek başlangıç nok
     call configure_networking                       ; Ağ bağlantısını yapılandır
 
     call initialize_processes                       ; İşlem yönetimini başlat
-
-infinite_loop:                                      ; Sonsuz döngüde beklemek için
-    jmp infinite_loop                               ; Sonsuz döngü oluştur
