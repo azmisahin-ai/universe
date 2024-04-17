@@ -276,10 +276,7 @@
     {
       "label": "arch_os_16",
       "dependsOrder": "sequence",
-      "dependsOn": [
-        "arch_os_16_create",
-        "arch_os_16_compile"
-      ]
+      "dependsOn": ["arch_os_16_create", "arch_os_16_compile"]
     },
     {
       "label": "arch_os_16_create",
@@ -313,6 +310,80 @@
         "pattern": {
           "regexp": "error"
         }
+      }
+    },
+
+    {
+      "label": "compileBoot",
+      "type": "shell",
+      "command": "nasm",
+      "args": ["-f", "bin", "src/os/boot.asm", "-o", "build/os/boot.bin"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "compileKernel",
+      "type": "shell",
+      "command": "nasm",
+      "args": ["-f", "bin", "src/os/kernel.asm", "-o", "build/os/kernel.bin"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "createImage",
+      "type": "shell",
+      "command": "dd",
+      "args": ["if=/dev/zero", "of=build/os/fda.img", "bs=512", "count=2880"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "copyBootToImage",
+      "type": "shell",
+      "command": "dd",
+      "args": [
+        "if=build/os/boot.bin",
+        "of=build/os/fda.img",
+        "seek=0",
+        "conv=notrunc"
+      ],
+      "dependsOn": ["compileBoot", "createImage"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "copyKernelToImage",
+      "type": "shell",
+      "command": "dd",
+      "args": [
+        "if=build/os/kernel.bin",
+        "of=build/os/fda.img",
+        "seek=1",
+        "conv=notrunc"
+      ],
+      "dependsOn": ["copyBootToImage", "compileKernel", "createImage"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "startQemu",
+      "type": "shell",
+      "command": "qemu-system-x86_64",
+      "args": ["-fda", "build/os/fda.img"],
+      "dependsOn": ["copyKernelToImage"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     }
   ]

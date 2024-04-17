@@ -13,7 +13,7 @@ if [ -f "build/os/boot.bin" ] && [ -f "build/os/kernel.bin" ]; then
     dd seek=1 conv=notrunc of=build/os/fda.img if=build/os/kernel.bin
 
     # QEMU'yu başlat
-    qemu-system-x86_64 -fda build/os/fda.img 
+    qemu-system-x86_64 -fda build/os/fda.img
 
 else
     echo "Dosya oluşturma işlemi başarısız oldu!"

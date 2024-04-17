@@ -39,6 +39,14 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/debug/os_16/${fileBasenameNoExtension}.bin",
       "preLaunchTask": "arch_os_16"
-    }    
+    },
+
+    {
+      "name": "Remote",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/os/kernel.bin",
+      "preLaunchTask": "startQemu"
+    }
   ]
 }
