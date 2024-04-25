@@ -33,7 +33,7 @@
 section .data
     request                 db                      'GET / HTTP/1.1', 0Dh, 0Ah, 'Host: 127.0.0.1:9001', 0Dh, 0Ah, 0Dh, 0Ah, 0h
     request_len             equ                     $ - request  ; dizinin uzunluğunu hesapla
-    msg_connection          db                      '0.0.0.0:9001 adresine baglaniyor.', 0h
+    msg_connection          db                      '127.0.0.1:9001 adresine baglaniyor.', 0h
 
 section .bss
     buffer                  resb                    255; İstek başlıklarını saklamak için bellek alanı
