@@ -7,8 +7,9 @@
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 
-section .text
-    global strlen, sprint, sprintLF, quit
+;section .text
+;    global strlen, sprint, sprintLF, quit
+
 
 ; @module helpers
 ; @description Yardımcılar
@@ -76,18 +77,7 @@ sprintLF:
     call    sprint                                  ; call our sprint function
     pop     eax                                     ; remove our linefeed character from the stack
     pop     eax                                     ; restore the original value of eax before our function was called
-    ret                                             ; return to our program 
- 
-; Hoş geldiniz mesajını göster
-; @function welcome
-; @description Hoşgeldin
-; @param {string} text bir string değer
-; @returns
-; --------------------------------------------------;--------------------------------------------------
-welcome:
-    mov     eax, msg_welcome
-    call    sprintLF
-    ret   
+    ret                                             ; return to our program   
 
 ; @function quit
 ; @description Programdan çık

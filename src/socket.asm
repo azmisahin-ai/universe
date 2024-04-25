@@ -120,7 +120,7 @@ _exit:
     xor     ebx, ebx                                ; Exit status
     int     80h                                     ; Linux kernel interrupt
     
-%include 'src/helpers.asm'
-
 ; ==================================================;==================================================
 %endif
+
+%include 'src/helpers.asm'

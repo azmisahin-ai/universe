@@ -9,9 +9,9 @@
 
 %include 'src/platform.asm'
 
-%include 'src/modules.asm'
-
 %include 'src/cells/data.asm'
+
+%include 'src/modules.asm'
 
 %include 'src/cells/logic.asm'
 

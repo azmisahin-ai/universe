@@ -9,6 +9,8 @@
 
 %include 'src/helpers.asm'
 
+%include 'src/common.asm'
+
 %include 'src/socket.asm'
 
 ; ==================================================;==================================================
