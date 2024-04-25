@@ -16,9 +16,14 @@ case "$ARCH" in
         ;;
     linux_32)
         mkdir -p "$PROJECT_FOLDER/build/release/$ARCH"
+
         nasm -F dwarf -g -f elf32 -o "$PROJECT_FOLDER/build/release/$ARCH/universe.o" -D"$ARCH" "$PROJECT_FOLDER/src/universe/universe.asm"
         ld -m elf_i386 -o "$PROJECT_FOLDER/build/release/$ARCH/universe" "$PROJECT_FOLDER/build/release/$ARCH/universe.o"
-        echo "Linux 32-bit build completed successfully."
+        echo "Linux 32-bit universe build completed successfully."
+
+        nasm -F dwarf -g -f elf32 -o "$PROJECT_FOLDER/build/release/$ARCH/microorganism.o" -D"$ARCH" "$PROJECT_FOLDER/src/cells/microorganism.asm"
+        ld -m elf_i386 -o "$PROJECT_FOLDER/build/release/$ARCH/microorganism" "$PROJECT_FOLDER/build/release/$ARCH/microorganism.o"
+        echo "Linux 32-bit microorganism build completed successfully."        
         ;;
     win_64)
         mkdir -p "$PROJECT_FOLDER/build/release/$ARCH"

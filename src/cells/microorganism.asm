@@ -13,6 +13,8 @@
 
 %include 'src/modules.asm'
 
+%include 'src/connector.asm'
+
 %include 'src/cells/logic.asm'
 
 ; ==================================================;==================================================

@@ -39,20 +39,20 @@ section .bss
     buffer                  resb                    255; İstek başlıklarını saklamak için bellek alanı
 
 section .text
-    global listen
+    global create_listener
 
 ; @module listen
 ; @description Bağlantı sağlayacak istekleri dinler
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
-listen:
+create_listener:
     xor     eax, eax                                ; eax'ı sıfırla
     xor     ebx, ebx                                ; ebx'ı sıfırla
     xor     edi, edi                                ; edi'yi sıfırla
     xor     esi, esi                                ; esi'yi sıfırla
 
-_socket:
+.socket:
     push    byte IPPROTO_TCP                        ; Stack'e IPPROTO_TCP'yi yerleştir (TCP protokol numarası)
     push    byte SOCK_STREAM                        ; Stack'e SOCK_STREAM'ü yerleştir (stream soket türü)
     push    byte PF_INET                            ; Stack'e PF_INET'i yerleştir (IPv4 protokol ailesi)
@@ -61,7 +61,7 @@ _socket:
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
 
-_bind:
+.bind:
     mov     edi, eax                                ; SYS_SOCKETCALL'dan dönen değeri edi'ye taşı (yeni soketin dosya tanımlayıcısı veya hata durumunda -1)
     push    dword IP_ADDRESS                        ; Stack'e IP_ADDRESS'yi yerleştir (0.0.0.0)
     push    word PORT_VALUE                         ; Stack'e PORT_VALUE'yi yerleştir (9001, ters bayt sırasıyla)
@@ -75,7 +75,10 @@ _bind:
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
 
-_listen:
+    mov     eax, msg_listening                      ; Yazılacak mesaj
+    call    sprintLF                                ; Dinleme mesajını yazdır
+
+.listen:
     push    byte SOMAXCONN                          ; Stack'e SOMAXCONN'u yerleştir (maksimum kuyruk uzunluğu argümanı)
     push    edi                                     ; Dosya tanımlayıcısını stack'e yerleştir
     mov     ecx, esp                                ; Argümanların adresini ecx'e taşı
@@ -83,10 +86,8 @@ _listen:
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
     
-    mov     eax, msg_listening                      ; Yazılacak mesaj
-    call    sprintLF                                ; Dinleme mesajını yazdır
 
-_accept:
+.accept:
     push    byte 0                                  ; Stack'e 0'ı adres uzunluğu argümanı olarak yerleştir
     push    byte 0                                  ; Stack'e 0'ı adres argümanı olarak yerleştir
     push    edi                                     ; Dosya tanımlayıcısını stack'e yerleştir
@@ -95,15 +96,15 @@ _accept:
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
 
-_fork:
+.fork:
     mov     esi, eax                                ; SYS_SOCKETCALL'dan dönen değeri esi'ye taşı (kabul edilen soketin dosya tanımlayıcısı veya hata durumunda -1)
     mov     eax, SYS_FORK                           ; FORK (2) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
     cmp     eax, 0                                  ; eax'teki SYS_FORK'un dönüş değeri 0 ise çocuk süreçteyiz
-    jz      _read                                   ; Çocuk süreçte _read'e atlama
-    jmp     _accept                                 ; Ebeveyn süreçte _accept'e atlama
+    jz      .read                                   ; Çocuk süreçte _read'e atlama
+    jmp     .accept                                 ; Ebeveyn süreçte _accept'e atlama
 
-_read:
+.read:
     mov     edx, MAX_READ_BYTES                     ; Okunacak bayt sayısı (255 olarak tanımlıyoruz)
     mov     ecx, buffer                             ; Buffer değişkenimizin bellek adresini ecx'e taşı
     mov     ebx, esi                                ; esi'yi ebx'e taşı (kabul edilen soket dosya tanımlayıcısı)
@@ -112,19 +113,19 @@ _read:
     mov     eax, buffer                             ; Buffer değişkenimizin bellek adresini eax'e taşı, yazdırmak için
     call    sprintLF                                ; String yazdırma işlevini çağır
 
-_write:
+.write:
     mov     edx, response_len                       ; Yanıtın uzunluğu
     mov     ecx, response                           ; response değişkeninin bellek adresini ecx'e taşı
     mov     ebx, esi                                ; Dosya tanımlayıcısını ebx'e taşı (kabul edilen soket kimliği)
     mov     eax, SYS_WRITE                          ; WRITE (4) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
 
-_close:
+.close:
     mov     ebx, esi                                ; esi'yi ebx'e taşı (kabul edilen soket dosya tanımlayıcısı)
     mov     eax, SYS_CLOSE                          ; CLOSE (6) sistem çağrısını çağır
     int     80h                                     ; Kernel'i çağır
 
-_exit:
+.exit:
     ; Çıkış yap
     mov     eax, SYS_EXIT                           ; EXIT (1) sistem çağrısını çağır
     xor     ebx, ebx                                ; Çıkış durumu
