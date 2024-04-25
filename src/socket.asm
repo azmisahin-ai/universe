@@ -46,6 +46,9 @@ section .text
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
+    mov     eax, msg_connection                     ; Yazılacak mesaj
+    call    sprintLF 
+
 create_listener:
     xor     eax, eax                                ; eax'ı sıfırla
     xor     ebx, ebx                                ; ebx'ı sıfırla
@@ -73,10 +76,7 @@ create_listener:
     mov     ecx, esp                                ; Argümanların adresini ecx'e taşı
     mov     ebx, BIND                               ; BIND (2) sistem çağrısını çağır
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
-    int     80h                                     ; Kernel'i çağır
-
-    mov     eax, msg_listening                      ; Yazılacak mesaj
-    call    sprintLF                                ; Dinleme mesajını yazdır
+    int     80h                                     ; Kernel'i çağır                              ; Dinleme mesajını yazdır
 
 .listen:
     push    byte SOMAXCONN                          ; Stack'e SOMAXCONN'u yerleştir (maksimum kuyruk uzunluğu argümanı)

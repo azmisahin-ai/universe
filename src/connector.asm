@@ -13,7 +13,7 @@
 %define SYS_SOCKET          1                       ; Soket oluşturma sistem çağrısı
 %define SYS_SOCKETCALL      102                     ; Soket işlemleri için genel sistem çağrısı
 
-%define IP_ADDRESS          0x7F000001              ; IP adresi olarak 127.0.0.1
+%define IP_ADDRESS          0x0100007F              ; IP adresi olarak 127.0.0.1
 %define PORT_VALUE          0x2923                  ; Port değeri olarak 9001 (ters bayt sırasıyla)
 %define AF_INET             2                       ; IPv4 adreslerini kullanır
 %define BIND                2
@@ -46,6 +46,9 @@ section .text
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
+    mov     eax, msg_connection                     ; Yazılacak mesaj
+    call    sprintLF  
+    
 create_connector:
     xor     eax, eax                                ; eax'ı sıfırla
     xor     ebx, ebx                                ; ebx'ı sıfırla
@@ -59,10 +62,7 @@ create_connector:
     mov     ecx, esp                                ; Argümanların adresini ecx'e taşı
     mov     ebx, SYS_SOCKET                         ; SOCKET (1) sistem çağrısını çağır
     mov     eax, SYS_SOCKETCALL                     ; SYS_SOCKETCALL (kernel opcode 102) sistem çağrısını çağır
-    int     80h                                     ; Kernel'i çağır
-
-    mov     eax, msg_connection                     ; Yazılacak mesaj
-    call    sprintLF   
+    int     80h                                     ; Kernel'i çağır 
 
 .bind:
     mov     edi, eax                                ; SYS_SOCKETCALL'dan dönen değeri edi'ye taşı (yeni soketin dosya tanımlayıcısı veya hata durumunda -1)
