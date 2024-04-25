@@ -46,7 +46,7 @@ section .text
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
-    mov     eax, msg_connection                     ; Yazılacak mesaj
+    mov     eax, msg_listening                      ; Yazılacak mesaj
     call    sprintLF 
 
 create_listener:
