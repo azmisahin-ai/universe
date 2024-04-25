@@ -31,6 +31,22 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/debug/win_32/${fileBasenameNoExtension}.exe",
       "preLaunchTask": "arch_win_32"
+    },
+
+    {
+      "name": "Debug os_16",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/debug/os_16/${fileBasenameNoExtension}.bin",
+      "preLaunchTask": "arch_os_16"
+    },
+
+    {
+      "name": "Remote",
+      "type": "gdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/os/{fileBasenameNoExtension}.bin",
+      "preLaunchTask": "startQemu"
     }
   ]
 }
