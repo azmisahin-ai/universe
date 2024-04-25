@@ -1,15 +1,19 @@
-%ifndef data.asm
-%define data.asm
+%ifndef microorganism.asm
+%define microorganism.asm
 
-; @file data.asm
-; @description Veri tanımları dosyası
+; @file universe.asm
+; @description order and structure of the universe
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
 
-section .data
-    msg_welcome db 'Universe', 0h  
-    request db 'GET / HTTP/1.1', 0Dh, 0Ah, 'Host: 1.1.1.1:8080', 0Dh, 0Ah, 0Dh, 0Ah, 0h
+%include 'src/platform.asm'
+
+%include 'src/modules.asm'
+
+%include 'src/cells/data.asm'
+
+%include 'src/cells/logic.asm'
 
 ; ==================================================;==================================================
 %endif

@@ -78,6 +78,17 @@ sprintLF:
     pop     eax                                     ; restore the original value of eax before our function was called
     ret                                             ; return to our program 
  
+; Hoş geldiniz mesajını göster
+; @function welcome
+; @description Hoşgeldin
+; @param {string} text bir string değer
+; @returns
+; --------------------------------------------------;--------------------------------------------------
+welcome:
+    mov     eax, msg_welcome
+    call    sprintLF
+    ret   
+
 ; @function quit
 ; @description Programdan çık
 ; @param
@@ -87,6 +98,7 @@ quit:
     mov     ebx, 0
     mov     eax, 1
     int     80h
-    ret
+    ret 
 
+; ==================================================;==================================================
 %endif

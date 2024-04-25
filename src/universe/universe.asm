@@ -9,12 +9,11 @@
 
 %include 'src/platform.asm'
 
-%include 'src/constants.asm'
-
 %include 'src/modules.asm'
 
-%include 'src/data.asm'
+%include 'src/universe/data.asm'
 
-%include 'src/logic.asm'
+%include 'src/universe/logic.asm'
 
+; ==================================================;==================================================
 %endif
