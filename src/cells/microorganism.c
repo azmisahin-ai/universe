@@ -1,6 +1,3 @@
-/**
- * microorganism.c
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,8 +13,11 @@ typedef struct {
     char name[20];
     int signal_strength;
     int active;
+    float temperature;    // Sıcaklık değeri
+    float pH;             // pH değeri
+    float oxygen_level;   // Oksijen seviyesi
+    float resource_level; // Kaynak seviyesi
 } Microorganism;
-
 // Daha iyi rastgele sayı üretme fonksiyonu
 int get_random_number(int min, int max) {
     static int initialized = 0;
@@ -28,7 +28,6 @@ int get_random_number(int min, int max) {
 
     return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
-
 int main() {
     int client_fd;
     struct sockaddr_in server_addr;
@@ -70,6 +69,29 @@ int main() {
     // Quorum durumunu işle
     if (quorum_reached) {
         printf("Quorum sağlandı! Tüm aktif mikroorganizmalar tepki verecek.\n");
+
+        // Sunucudan çevresel değişkenleri al
+        recv(client_fd, &my_microorganism.temperature, sizeof(float), 0);
+        recv(client_fd, &my_microorganism.pH, sizeof(float), 0);
+        recv(client_fd, &my_microorganism.oxygen_level, sizeof(float), 0);
+        recv(client_fd, &my_microorganism.resource_level, sizeof(float), 0);
+
+        // Çevresel değişikliklere tepkiyi işle
+        if (my_microorganism.temperature > 30.0) {
+            printf("%s sıcaklık değişikliğine tepki veriyor...\n", my_microorganism.name);
+        }
+
+        if (my_microorganism.pH < 6.0) {
+            printf("%s asitik bir ortama tepki veriyor...\n", my_microorganism.name);
+        }
+
+        if (my_microorganism.oxygen_level < 0.1) {
+            printf("%s düşük oksijen seviyesine tepki veriyor...\n", my_microorganism.name);
+        }
+
+        if (my_microorganism.resource_level > 50.0) {
+            printf("%s yüksek kaynak seviyesine sahip, diğer organizmalarla rekabet ediyor...\n", my_microorganism.name);
+        }
     } else {
         printf("Quorum sağlanamadı.\n");
     }

@@ -1,12 +1,10 @@
-/**
- * universe.c
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <time.h>
 
 #define PORT 5000
 #define MAX_CLIENTS 10
@@ -16,8 +14,26 @@ typedef struct {
     char name[20];
     int signal_strength;
     int active;
+    float temperature;
+    float pH;
+    float oxygen_level;
+    float resource_level;
 } Microorganism;
+// Daha iyi rastgele sayı üretme fonksiyonu
+int get_random_number(int min, int max) {
+    static int initialized = 0;
+    if (!initialized) {
+        srand(time(NULL)); // Yalnızca bir kez tohumlama yap
+        initialized = 1;
+    }
 
+    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
+}
+
+// Daha iyi rastgele sayı üretme fonksiyonu
+float get_random_float(float min, float max) {
+    return min + ((float)rand() / RAND_MAX) * (max - min);
+}
 int main() {
     int server_fd, client_fds[MAX_CLIENTS];
     struct sockaddr_in server_addr, client_addr;
@@ -98,6 +114,18 @@ int main() {
             // Quorum durumunu işle
             if (quorum_reached) {
                 printf("Quorum sağlandı! Tüm aktif mikroorganizmalar tepki verecek.\n");
+
+                // Çevresel değişkenlerde rastgele değişiklikleri simüle et
+                for (int i = 0; i < num_microorganisms; i++) {
+                   // Sıcaklık artışı
+                    microorganisms[i].temperature += get_random_float(0.0, 5.0);
+                    // pH değişikliği
+                    microorganisms[i].pH += get_random_float(-1.0, 1.0);
+                    // Oksijen seviyesi düşüşü
+                    microorganisms[i].oxygen_level -= get_random_float(0.0, 0.05);
+                    // Kaynak seviyesi azalması
+                    microorganisms[i].resource_level -= get_random_float(0.0, 2.0);
+                }
             } else {
                 printf("Quorum sağlanamadı.\n");
             }
