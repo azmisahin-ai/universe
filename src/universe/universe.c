@@ -1,3 +1,4 @@
+// universe.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,11 +7,12 @@
 #include <sys/socket.h>
 #include <time.h>
 
-#define PORT 5000
+#define PORT 9001
 #define MAX_CLIENTS 10
 #define QUORUM_THRESHOLD 5
 
-typedef struct {
+typedef struct
+{
     char name[20];
     int signal_strength;
     int active;
@@ -20,9 +22,11 @@ typedef struct {
     float resource_level;
 } Microorganism;
 // Daha iyi rastgele sayı üretme fonksiyonu
-int get_random_number(int min, int max) {
+int get_random_number(int min, int max)
+{
     static int initialized = 0;
-    if (!initialized) {
+    if (!initialized)
+    {
         srand(time(NULL)); // Yalnızca bir kez tohumlama yap
         initialized = 1;
     }
@@ -31,10 +35,12 @@ int get_random_number(int min, int max) {
 }
 
 // Daha iyi rastgele sayı üretme fonksiyonu
-float get_random_float(float min, float max) {
+float get_random_float(float min, float max)
+{
     return min + ((float)rand() / RAND_MAX) * (max - min);
 }
-int main() {
+int main()
+{
     int server_fd, client_fds[MAX_CLIENTS];
     struct sockaddr_in server_addr, client_addr;
     socklen_t addr_len = sizeof(client_addr);
@@ -43,7 +49,8 @@ int main() {
     int num_microorganisms = 0;
 
     // Socket oluşturma
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
         perror("Socket oluşturma hatası");
         exit(EXIT_FAILURE);
     }
@@ -55,13 +62,15 @@ int main() {
     server_addr.sin_port = htons(PORT);
 
     // Sunucu soketini bağla
-    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
+    {
         perror("Bağlantı hatası");
         exit(EXIT_FAILURE);
     }
 
     // Sunucuyu dinlemeye başla
-    if (listen(server_fd, MAX_CLIENTS) == -1) {
+    if (listen(server_fd, MAX_CLIENTS) == -1)
+    {
         perror("Dinleme hatası");
         exit(EXIT_FAILURE);
     }
@@ -70,19 +79,24 @@ int main() {
 
     srand(time(NULL)); // Rastgelelik için tohum ayarla
 
-    while (1) {
+    while (1)
+    {
         // Yeni bir istemci bağlantısı kabul et
         int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &addr_len);
-        if (client_fd == -1) {
+        if (client_fd == -1)
+        {
             perror("Bağlantı kabul hatası");
             continue;
         }
 
         // Istemci soketini `client_fds` dizisine ekle
-        if (num_microorganisms < MAX_CLIENTS) {
+        if (num_microorganisms < MAX_CLIENTS)
+        {
             client_fds[num_microorganisms] = client_fd;
             num_microorganisms++;
-        } else {
+        }
+        else
+        {
             printf("Maksimum istemci sayısına ulaşıldı, yeni istemci kabul edilemiyor.\n");
             close(client_fd);
             continue;
@@ -96,10 +110,13 @@ int main() {
         microorganisms[num_microorganisms - 1] = new_microorganism;
 
         // Quorum kontrolü
-        if (num_microorganisms >= QUORUM_THRESHOLD) {
+        if (num_microorganisms >= QUORUM_THRESHOLD)
+        {
             int count = 0;
-            for (int i = 0; i < num_microorganisms; i++) {
-                if (microorganisms[i].active && microorganisms[i].signal_strength >= QUORUM_THRESHOLD) {
+            for (int i = 0; i < num_microorganisms; i++)
+            {
+                if (microorganisms[i].active && microorganisms[i].signal_strength >= QUORUM_THRESHOLD)
+                {
                     count++;
                 }
             }
@@ -107,17 +124,20 @@ int main() {
             int quorum_reached = (count >= QUORUM_THRESHOLD) ? 1 : 0;
 
             // Tüm istemcilere quorum sonucunu gönder
-            for (int i = 0; i < num_microorganisms; i++) {
+            for (int i = 0; i < num_microorganisms; i++)
+            {
                 send(client_fds[i], &quorum_reached, sizeof(int), 0);
             }
 
             // Quorum durumunu işle
-            if (quorum_reached) {
+            if (quorum_reached)
+            {
                 printf("Quorum sağlandı! Tüm aktif mikroorganizmalar tepki verecek.\n");
 
                 // Çevresel değişkenlerde rastgele değişiklikleri simüle et
-                for (int i = 0; i < num_microorganisms; i++) {
-                   // Sıcaklık artışı
+                for (int i = 0; i < num_microorganisms; i++)
+                {
+                    // Sıcaklık artışı
                     microorganisms[i].temperature += get_random_float(0.0, 5.0);
                     // pH değişikliği
                     microorganisms[i].pH += get_random_float(-1.0, 1.0);
@@ -126,12 +146,15 @@ int main() {
                     // Kaynak seviyesi azalması
                     microorganisms[i].resource_level -= get_random_float(0.0, 2.0);
                 }
-            } else {
+            }
+            else
+            {
                 printf("Quorum sağlanamadı.\n");
             }
 
             // Bağlantıları kapat ve sunucuyu sıfırla
-            for (int i = 0; i < num_microorganisms; i++) {
+            for (int i = 0; i < num_microorganisms; i++)
+            {
                 close(client_fds[i]);
             }
             num_microorganisms = 0;

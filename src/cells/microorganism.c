@@ -1,3 +1,4 @@
+// microorganism.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,7 +7,7 @@
 #include <sys/socket.h>
 #include <time.h>
 
-#define PORT 5000
+#define PORT 9001
 #define SERVER_IP "127.0.0.1"  // Sunucu IP adresi
 
 typedef struct {
