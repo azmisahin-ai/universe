@@ -8,7 +8,7 @@
 
 #define PORT 9001
 #define MAX_CLIENTS 10
-#define QUORUM_THRESHOLD 1
+#define QUORUM_THRESHOLD 5
 
 typedef struct {
     char name[20];
@@ -67,7 +67,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    printf("Universe dinlemede...\n");
+    printf("Universe dinleniyor...\n");
 
     srand(time(NULL)); // Rastgelelik için tohum ayarla
 
@@ -142,7 +142,7 @@ int main() {
                 close(client_fds[i]);
             }
             num_microorganisms = 0;
-            printf("Sunucu sıfırlandı, yeni mikroorganizmaları bekliyor...\n");
+            printf("Universe sıfırlandı, yeni mikroorganizmaları bekliyor...\n");
         }
     }
 
