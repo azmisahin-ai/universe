@@ -1,4 +1,3 @@
-// microorganism.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,16 +18,17 @@ typedef struct {
     float oxygen_level;   // Oksijen seviyesi
     float resource_level; // Kaynak seviyesi
 } Microorganism;
-// Daha iyi rastgele sayı üretme fonksiyonu
+
+// Rastgele sayı üretme fonksiyonu
 int get_random_number(int min, int max) {
     static int initialized = 0;
     if (!initialized) {
         srand(time(NULL)); // Yalnızca bir kez tohumlama yap
         initialized = 1;
     }
-
     return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
+
 int main() {
     int client_fd;
     struct sockaddr_in server_addr;
@@ -51,17 +51,17 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    printf("Sunucuya bağlanıldı.\n");
+    printf("Universe bağlantısı gerçekleşti.\n");
 
     // Rastgele mikroorganizma oluştur
     Microorganism my_microorganism;
     sprintf(my_microorganism.name, "Mikroorganizma-%d", getpid());
-    my_microorganism.signal_strength = get_random_number(1, 10); // 1 ile 10 arasında rastgele sayı
+    my_microorganism.signal_strength = get_random_number(1, 10); // 1 ile 10 arasında rastgele sinyal gücü
     my_microorganism.active = 1;
 
     // Mikroorganizmayı sunucuya gönder
     send(client_fd, &my_microorganism, sizeof(Microorganism), 0);
-    printf("%s sunucuya bağlandı. Sinyal gücü: %d\n", my_microorganism.name, my_microorganism.signal_strength);
+    printf("%s Sinyal gücü: %d\n", my_microorganism.name, my_microorganism.signal_strength);
 
     // Sunucudan quorum kontrol sonucunu al
     int quorum_reached;
@@ -69,7 +69,7 @@ int main() {
 
     // Quorum durumunu işle
     if (quorum_reached) {
-        printf("Quorum sağlandı! Tüm aktif mikroorganizmalar tepki verecek.\n");
+        printf("Quorum sağlandı! Çevresel değişkenler alınıyor...\n");
 
         // Sunucudan çevresel değişkenleri al
         recv(client_fd, &my_microorganism.temperature, sizeof(float), 0);
@@ -77,7 +77,7 @@ int main() {
         recv(client_fd, &my_microorganism.oxygen_level, sizeof(float), 0);
         recv(client_fd, &my_microorganism.resource_level, sizeof(float), 0);
 
-        // Çevresel değişikliklere tepkiyi işle
+        // Çevresel değişkenlere tepkiyi işle
         if (my_microorganism.temperature > 30.0) {
             printf("%s sıcaklık değişikliğine tepki veriyor...\n", my_microorganism.name);
         }
