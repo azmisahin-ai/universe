@@ -67,7 +67,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    printf("Sunucu dinleniyor...\n");
+    printf("Universe dinlemede...\n");
 
     srand(time(NULL)); // Rastgelelik için tohum ayarla
 
