@@ -9,6 +9,7 @@
 %endif
 
 %ifndef linux_32
+                                                    ; linux 32 bit cekirdirdegi baslatildi.
 %define linux_32
 %endif
 

@@ -6,29 +6,8 @@
 ; @author Azmi SAHIN
 ; @version 0.0.0.1
 ; --------------------------------------------------;--------------------------------------------------
-%define IPPROTO_TCP         6                       ; TCP protokol numarası
-%define SOCK_STREAM         1                       ; Stream soket türü
-%define PF_INET             2                       ; IPv4 protokol ailesi
 
-%define SYS_SOCKET          1                       ; Soket oluşturma sistem çağrısı
-%define SYS_SOCKETCALL      102                     ; Soket işlemleri için genel sistem çağrısı
-
-%define IP_ADDRESS          0x00000000              ; IP adresi olarak 0.0.0.0
-%define PORT_VALUE          0x2923                  ; Port değeri olarak 9001 (ters bayt sırasıyla)
-%define AF_INET             2                       ; IPv4 adreslerini kullanır
-%define BIND                2
-%define CONNECT             3
-
-%define SOMAXCONN           1                       ; Dinleme kuyruğunun maksimum uzunluğu 2147483647
-%define SYS_LISTEN          4                       ; Soketi dinleme sistem çağrısı
-
-%define SYS_ACCEPT          5                       ; Bağlantı kabul sistem çağrısı
-%define SYS_FORK            2                       ; Yeni süreç oluşturma sistem çağrısı
-%define MAX_READ_BYTES      255                     ; Okunacak maksimum bayt sayısı
-%define SYS_READ            3                       ; Veri okuma sistem çağrısı
-%define SYS_WRITE           4                       ; Veri yazma sistem çağrısı
-%define SYS_CLOSE           6                       ; Dosya tanımlayıcısını kapatma sistem çağrısı
-%define SYS_EXIT            1                       ; Süreci sonlandırma sistem çağrısı
+%include 'src/socket.asm' 
 
 section .data
     response                db                      'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 18', 0Dh, 0Ah, 0Dh, 0Ah, 'Hello Universe!', 0Dh, 0Ah, 0h
@@ -66,7 +45,7 @@ create_sensor:
 
 .bind:
     mov     edi, eax                                ; SYS_SOCKETCALL'dan dönen değeri edi'ye taşı (yeni soketin dosya tanımlayıcısı veya hata durumunda -1)
-    push    dword IP_ADDRESS                        ; Stack'e IP_ADDRESS'yi yerleştir (0.0.0.0)
+    push    dword SENSOR_IP_ADDRESS                 ; Stack'e IP_ADDRESS'yi yerleştir (0.0.0.0)
     push    word PORT_VALUE                         ; Stack'e PORT_VALUE'yi yerleştir (9001, ters bayt sırasıyla)
     push    word AF_INET                            ; Stack'e 2'yi AF_INET olarak yerleştir
     mov     ecx, esp                                ; Argümanların adresini ecx'e taşı

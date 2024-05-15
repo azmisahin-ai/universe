@@ -22,20 +22,20 @@
 ; @param {string} text bir string değer
 ; @returns {number} Sring uzunluğu
 ; --------------------------------------------------;--------------------------------------------------
-strlen:                                             ; this is our first function declaration
-    push    ebx                                     ; push the value in EBX onto the stack to preserve it while we use EBX in this function
-    mov     ebx, eax                                ; move the address in EAX into EBX (Both point to the same segment in memory)    
+strlen:                                             ; string uzunlugu hesaplama
+    push    ebx                                     ; EBX'i bu fonksiyonda kullanırken korumak için EBX'teki değeri yığının üzerine itin
+    mov     ebx, eax                                ; EAX'teki adresi EBX'e taşıyın (Her ikisi de bellekte aynı segmenti gösterir)   
  
 nextchar:
-    cmp     byte [eax], 0                           ; compare the byte pointed to by EAX at this address against zero (Zero is an end of string delimiter)
-    jz      finished                                ; jump (if the zero flagged has been set) to the point in the code labeled 'finished'
-    inc     eax                                     ; increment the address in EAX by one byte (if the zero flagged has NOT been set)
-    jmp     nextchar                                ; jump to the point in the code labeled 'nextchar'
+    cmp     byte [eax], 0                           ; bu adreste EAX tarafından işaret edilen baytı sıfırla karşılaştırın (Sıfır, dize sınırlayıcısının sonudur)
+    jz      finished                                ; koddaki 'finished' etiketli noktaya atlayın (eğer sıfır işaretliyse)
+    inc     eax                                     ; EAX'taki adresi bir bayt artırın (sıfır işaretli AYARLANMAMIŞSA)
+    jmp     nextchar                                ; 'nextchar' etiketli koddaki noktaya atlayın
  
 finished:
     sub     eax, ebx
-    pop     ebx                                     ; pop the value on the stack back into EBX
-    ret                                             ; return to where the function was called
+    pop     ebx                                     ; yığındaki değeri tekrar EBX'e aktarın
+    ret                                             ; fonksiyonun çağrıldığı yere geri dön
  
 ; @function sprint
 ; @description String yazdırma
@@ -70,14 +70,14 @@ sprint:
 sprintLF:
     call    sprint
  
-    push    eax                                     ; push eax onto the stack to preserve it while we use the eax register in this function
-    mov     eax, 0Ah                                ; move 0Ah into eax - 0Ah is the ascii character for a linefeed
-    push    eax                                     ; push the linefeed onto the stack so we can get the address
-    mov     eax, esp                                ; move the address of the current stack pointer into eax for sprint
-    call    sprint                                  ; call our sprint function
-    pop     eax                                     ; remove our linefeed character from the stack
-    pop     eax                                     ; restore the original value of eax before our function was called
-    ret                                             ; return to our program   
+    push    eax                                     ; Bu fonksiyonda eax kaydını kullanırken onu korumak için eax'i yığının üzerine itin
+    mov     eax, 0Ah                                ; 0Ah'ı eax'e taşıyın - 0Ah, satır beslemesinin ascii karakteridir
+    push    eax                                     ; adresi alabilmemiz için satır beslemesini yığının üzerine itin
+    mov     eax, esp                                ; geçerli yığın işaretçisinin adresini sprint için eax'e taşıyın
+    call    sprint                                  ; sprint fonksiyonumuzu çağırın
+    pop     eax                                     ; satır besleme karakterimizi yığından kaldırın
+    pop     eax                                     ; işlevimiz çağrılmadan önce eax'in orijinal değerini geri yükleyin
+    ret                                             ; programımıza geri dön
 
 ; @function quit
 ; @description Programdan çık
