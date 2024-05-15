@@ -13,7 +13,7 @@
 
 %include 'src/modules.asm'
 
-%include 'src/socket.asm'
+%include 'src/universe/sensor.asm'
 
 %include 'src/universe/logic.asm'
 

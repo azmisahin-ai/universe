@@ -12,7 +12,7 @@ section .text
 
 _start:                     ; Başla
     call welcome            ; Hoş geldiniz mesajını göster
-    call create_listener    ; Dinleyici oluştur
+    call create_sensor      ; Sensor oluştur
     call quit               ; Programdan çık
 
 ; ==================================================;==================================================

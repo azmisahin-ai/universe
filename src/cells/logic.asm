@@ -11,7 +11,7 @@ section .text
 
 _start:                     ; Başla
     call welcome            ; Hoş geldiniz mesajını göster
-    call create_connector   ; Dinleyiciler ile bağlantı kur    
+    call create_signal      ; Sinyal oluştur    
     call quit               ; Programdan çık
 
 ; ==================================================;==================================================
